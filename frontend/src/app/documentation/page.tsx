@@ -60,68 +60,62 @@ export default function DocumentationPage() {
             </ul>
           </section>
           
+          {/* Nouvelle Section "QueryScope Advantage" */}
           <hr className="my-10 border-gray-200"/>
+          <section className="space-y-8">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">The QueryScope Advantage: Streamlining Your Workflow</h2>
+            <p className="text-gray-600 leading-relaxed">Manually segmenting GSC data can be time-consuming and error-prone. Here's how QueryScope simplifies each step:</p>
 
-          <section className="space-y-4">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">QueryScope vs. Manual Process</h2>
-            <p className="text-gray-600 leading-relaxed">To highlight the value QueryScope brings, here's a comparison between achieving brand/non-brand segmentation manually versus using the tool:</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-              {/* Colonne Processus Manuel */}
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center">Manual Process (GSC + Spreadsheet)</h3>
-                <ol className="list-decimal list-outside space-y-3 pl-5 text-sm text-gray-600">
-                  <li>Access GSC (Log in, select property).</li>
-                  <li>Filter for "Brand" Queries (Performance &gt; Queries &gt; New Filter &gt; Query &gt; Contains/Regex &gt; *brand_pattern*).</li>
-                  <li>Export "Brand" Data (Export button &gt; CSV/Excel - <strong className="text-red-600">UI limited to 1000 rows</strong>).</li>
-                  <li>Re-Filter for "Non-Brand" Queries (Modify Filter &gt; Doesn't Contain/Negative Regex &gt; *brand_pattern*).</li>
-                  <li>Export "Non-Brand" Data (Export button &gt; CSV/Excel - <strong className="text-red-600">UI limited to 1000 rows</strong>).</li>
-                  <li>Open Spreadsheet (Excel, Sheets).</li>
-                  <li>Import/Open both CSV files.</li>
-                  <li>Calculate Totals & Percentages (SUM formulas for Brand & Non-Brand clicks, calculate % shares).</li>
-                  <li>Create Visualization (Optional: Select data > Insert Chart > Pie).</li>
-                </ol>
-                <div className="mt-6 pt-4 border-t border-gray-200 text-xs text-gray-500">
-                  <p><strong className="font-medium">Key Points:</strong></p>
-                  <ul className="list-disc list-outside pl-4 mt-1 space-y-1">
-                    <li>Multiple manual steps.</li>
-                    <li>Risk of errors (filters, formulas).</li>
-                    <li>Limited to 1000 rows per export in GSC UI.</li>
-                    <li>Time-consuming.</li>
-                  </ul>
-                </div>
+            {/* Point 1: Multiple Steps vs Automation */}
+            <div className="space-y-4">
+              <div className="p-4 border-l-4 border-red-400 bg-red-50 rounded-r-lg">
+                <h4 className="font-semibold text-red-800">Manual Pain Point: Multiple Tedious Steps</h4>
+                <p className="text-sm text-red-700 mt-1">Accessing GSC, applying filters multiple times, exporting separate files, opening spreadsheets, writing formulas...</p>
               </div>
-
-              {/* Colonne QueryScope */}
-              <div className="p-6 bg-indigo-50 rounded-b-lg md:rounded-r-lg md:rounded-b-none">
-                <h3 className="text-lg font-semibold text-indigo-800 mb-4 text-center">QueryScope Process</h3>
-                <ol className="list-decimal list-outside space-y-3 pl-5 text-sm text-indigo-700">
-                  <li>Open QueryScope (No account needed).</li>
-                  <li>Configure Analysis:
-                      <ul className="list-disc list-outside pl-4 text-xs mt-1">
-                        <li>Upload GSC JSON Key</li>
-                        <li>Select Site URL</li>
-                        <li>Select Date Range</li>
-                        <li>Enter Brand Pattern (e.g., `apple|iphone`)</li>
-                      </ul>
-                  </li>
-                  <li>Click "Analyze".</li>
-                  <li className="italic text-gray-500">(QueryScope handles automatically: GSC API call with pagination &gt;1000 rows, filter application, aggregation, % calculation, chart generation).</li>
-                  <li>View Dashboard (Brand/Non-Brand Clicks & %, Pie Chart, Top Queries).</li>
-                  <li>Export Results (Optional: Full CSV/Excel export, PNG chart).</li>
-                </ol>
-                 <div className="mt-6 pt-4 border-t border-indigo-100 text-xs text-indigo-600">
-                  <p><strong className="font-medium">Key Points:</strong></p>
-                  <ul className="list-disc list-outside pl-4 mt-1 space-y-1">
-                    <li>Essentially 1-click process (after config).</li>
-                    <li>Complete data (>1000 rows via API).</li>
-                    <li>Automated calculation & visualization.</li>
-                    <li>Fast and reliable.</li>
-                  </ul>
-                </div>
+              <div className="p-4 border-l-4 border-indigo-400 bg-indigo-50 rounded-r-lg">
+                <h4 className="font-semibold text-indigo-800">QueryScope Solution: One-Click Analysis</h4>
+                <p className="text-sm text-indigo-700 mt-1">Configure once (key, date, regex), then click "Analyze". QueryScope handles all GSC interactions, calculations, and visualization automatically.</p>
               </div>
             </div>
+
+            {/* Point 2: Data Limitation vs Completeness */}
+            <div className="space-y-4">
+              <div className="p-4 border-l-4 border-red-400 bg-red-50 rounded-r-lg">
+                <h4 className="font-semibold text-red-800">Manual Pain Point: GSC UI Data Limit</h4>
+                <p className="text-sm text-red-700 mt-1">Exports from the GSC interface are limited to only the top 1,000 rows per filter, potentially missing significant long-tail query data.</p>
+              </div>
+              <div className="p-4 border-l-4 border-indigo-400 bg-indigo-50 rounded-r-lg">
+                <h4 className="font-semibold text-indigo-800">QueryScope Solution: Complete Data via API</h4>
+                <p className="text-sm text-indigo-700 mt-1">Utilizes the GSC API with automatic pagination to retrieve **all** available query data, ensuring your analysis is comprehensive, even beyond 1,000 rows.</p>
+              </div>
+            </div>
+
+            {/* Point 3: Error Risk vs Reliability */}
+            <div className="space-y-4">
+              <div className="p-4 border-l-4 border-red-400 bg-red-50 rounded-r-lg">
+                <h4 className="font-semibold text-red-800">Manual Pain Point: Risk of Errors</h4>
+                <p className="text-sm text-red-700 mt-1">Incorrectly applied filters in GSC, copy-paste mistakes, or formula errors in spreadsheets can lead to inaccurate segmentation.</p>
+              </div>
+              <div className="p-4 border-l-4 border-indigo-400 bg-indigo-50 rounded-r-lg">
+                <h4 className="font-semibold text-indigo-800">QueryScope Solution: Automated & Reliable</h4>
+                <p className="text-sm text-indigo-700 mt-1">Automated processing eliminates manual errors. The logic is consistently applied based on your exact brand regex pattern.</p>
+              </div>
+            </div>
+            
+             {/* Point 4: Time vs Speed */}
+            <div className="space-y-4">
+              <div className="p-4 border-l-4 border-red-400 bg-red-50 rounded-r-lg">
+                <h4 className="font-semibold text-red-800">Manual Pain Point: Time Consuming</h4>
+                <p className="text-sm text-red-700 mt-1">The entire manual process can take significant time, especially if repeated regularly or for multiple clients.</p>
+              </div>
+              <div className="p-4 border-l-4 border-indigo-400 bg-indigo-50 rounded-r-lg">
+                <h4 className="font-semibold text-indigo-800">QueryScope Solution: Fast Results</h4>
+                <p className="text-sm text-indigo-700 mt-1">Get your complete branded vs. non-branded breakdown and visualizations in seconds or minutes, not hours.</p>
+              </div>
+            </div>
+
           </section>
+          {/* Fin Section Avantage */}
 
           <hr className="my-10 border-gray-200"/>
 
