@@ -16,7 +16,7 @@ export default function DocumentationPage() {
         {/* Bouton Retour */}
         <div className="mb-10">
           <Link href="/" legacyBehavior>
-            <a className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200 no-underline text-sm font-medium">&larr; Retour à l'application</a>
+            <a className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200 no-underline text-sm font-medium">&larr; Back to App</a>
           </Link>
         </div>
 
@@ -27,21 +27,21 @@ export default function DocumentationPage() {
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Overview</h2>
             <p className="text-lg text-gray-700 leading-relaxed">QueryScope – Segment your GSC queries into branded and unbranded.</p>
             
-            {/* Schéma de Segmentation CSS */}
+            {/* Simplified Segmentation Schema - English */}
             <div className="my-8 p-4 border border-gray-200 rounded-lg bg-gray-50">
-              <div className="text-center text-sm font-medium text-gray-700 mb-4">Processus de Segmentation Simplifié</div>
+              <div className="text-center text-sm font-medium text-gray-700 mb-4">Simplified Segmentation Process</div>
               <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4 sm:justify-center">
                 <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">Google Search Traffic</div>
                 <div className="text-gray-400 text-xl font-light sm:rotate-0 rotate-90">→</div>
-                <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">Filtre "Marque" (Regex)</div>
+                <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">Brand Filter (Regex)</div>
                 <div className="text-gray-400 text-xl font-light sm:rotate-0 rotate-90">→</div>
                 <div className="flex flex-col space-y-1">
-                   <div className="px-3 py-1 bg-violet-100 text-violet-800 rounded text-sm">Clics Marque</div>
-                   <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded text-sm">Clics Hors-Marque</div>
+                   <div className="px-3 py-1 bg-violet-100 text-violet-800 rounded text-sm">Brand Clicks</div>
+                   <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded text-sm">Non-Brand Clicks</div>
                 </div>
               </div>
             </div>
-            {/* Fin Schéma */}
+            {/* End Schema */}
 
             <p className="text-gray-600 leading-relaxed">QueryScope is an SEO tool that automatically separates your Google Search Console (GSC) search query data into branded and non-branded categories. Branded search queries are those that include your brand name (including typos or alternate spellings), whereas non-branded queries do not include your brand name or any variant. By connecting directly to your GSC data, QueryScope provides a clear breakdown of how many clicks come from people searching for your brand versus people searching for generic terms relevant to your business. In practice, this means you can quickly see, for example, if "Apple Watch" searches (branded) are driving 40% of your organic clicks while generic searches like "best smartwatch" (non-branded) drive the other 60%. QueryScope solves the common headache of manually filtering and segmenting queries in GSC – it delivers the insights at a glance. This not only saves you time but also ensures reporting is accurate and focused on the right metrics. In short, QueryScope gives SEO professionals and marketers clarity on the makeup of their organic traffic, enabling better strategic decisions with minimal effort.</p>
           </section>
@@ -180,18 +180,18 @@ export default function DocumentationPage() {
               <li>
                 Google Data Sampling & Omission: Google Search Console does not always report all queries, especially those with extremely low volumes or those filtered for privacy. This means the data QueryScope analyzes is an extensive sample of your traffic, but it may not include every single long-tail query. 
                 
-                {/* Schéma Échantillonnage CSS */}
+                {/* GSC Sampling Schema - English */}
                 <div className="my-4 p-3 border border-gray-200 rounded-lg bg-gray-50 text-xs text-center">
-                  <div className="font-medium text-gray-600 mb-2">Concept d'Échantillonnage GSC</div>
+                  <div className="font-medium text-gray-600 mb-2">GSC Sampling Concept</div>
                   <div className="relative border-2 border-dashed border-gray-400 p-6 rounded">
-                    <span className="absolute -top-2 left-2 bg-gray-50 px-1 text-gray-500">Toutes les Recherches</span>
+                    <span className="absolute -top-2 left-2 bg-gray-50 px-1 text-gray-500">All Searches</span>
                     <div className="border border-blue-300 bg-blue-50 p-3 rounded">
-                      <span className="text-blue-800">Données Rapportées par l'API GSC</span>
+                      <span className="text-blue-800">Data Reported by GSC API</span>
                     </div>
-                    <div className="absolute -bottom-2 right-2 bg-gray-50 px-1 text-gray-500 italic">Différence = Échantillonnage & Confidentialité</div>
+                    <div className="absolute -bottom-2 right-2 bg-gray-50 px-1 text-gray-500 italic">Difference = Sampling & Privacy</div>
                   </div>
                 </div>
-                {/* Fin Schéma */}
+                {/* End Schema */}
 
                 In practice, you might notice that if you add branded and non-branded clicks from QueryScope, the sum can be slightly lower than the total clicks reported in GSC's overview. Google's own documentation notes that filtering by queries (e.g., using "contains" or regex filters) might not capture 100% of the total, so filtered totals may not equal the unfiltered total. Implication: The percentages and numbers are accurate for the data retrieved, but consider them an approximation of the true total distribution. They are usually very close, but minor discrepancies are normal due to GSC's data aggregation methods.
               </li>
@@ -211,7 +211,7 @@ export default function DocumentationPage() {
            {/* Bouton Retour */}
           <div className="mt-12 text-center">
             <Link href="/" legacyBehavior>
-              <a className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200 no-underline text-sm font-medium">&larr; Retour à l'application</a>
+              <a className="text-indigo-600 hover:text-indigo-800 transition-colors duration-200 no-underline text-sm font-medium">&larr; Back to App</a>
             </Link>
           </div>
         </article>
