@@ -491,21 +491,20 @@ Focus on trends and relative performance rather than exact number matching.`,
     : faqItems; // Show all if activeCategory is null (though we removed the 'All' button)
 
   return (
-    <div className="py-12 md:py-20 px-4 md:px-8 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16 text-gray-800 dark:text-white">
-        Frequently Asked Questions
+    <div id="guide" className="mt-16 glass-effect p-8 rounded-2xl shadow-lg animate-fade-in">
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+        Guide
       </h2>
 
-      {/* Category Buttons - Removed "All Categories" */}
-      <div className="flex flex-wrap justify-center gap-2 mb-8 md:mb-12">
+      <div className="flex flex-wrap gap-2 mb-6">
         {Object.keys(categories).map(category => (
           <button
             key={category}
             onClick={() => handleCategoryClick(category)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ease-in-out ${
+            className={`px-4 py-2 rounded-lg ${
               activeCategory === category
-                ? 'bg-indigo-600 text-white shadow-md'
-                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             {category}
@@ -513,33 +512,66 @@ Focus on trends and relative performance rather than exact number matching.`,
         ))}
       </div>
 
-      {/* FAQ Items */}
-      <div className="max-w-4xl mx-auto space-y-4">
+      <div className="space-y-4">
         {filteredItems.map((item, index) => {
           // Calculate the original index based on the active category filter
           const originalIndex = activeCategory ? faqItems.findIndex(original => original.question === item.question) : index;
           const isOpen = openItem === originalIndex;
 
           return (
-            <div key={originalIndex} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+            <div 
+              key={originalIndex} 
+              className="border border-gray-100 rounded-xl overflow-hidden bg-white transition-all duration-300 hover:shadow-md"
+            >
               <button
                 onClick={() => toggleItem(originalIndex)}
-                className="w-full flex justify-between items-center p-4 md:p-5 text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
                 aria-expanded={isOpen}
               >
-                <span className="flex items-center">
-                   <span className="mr-3 text-xl">{item.icon}</span>
-                  <span className="font-semibold text-gray-800 dark:text-white">{item.question}</span>
-                </span>
-                <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
-                  <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                </span>
+                <div className="flex items-center gap-3">
+                   <span className="text-xl">{item.icon}</span>
+                   <span className="font-medium text-gray-900">{item.question}</span>
+                </div>
+                <svg
+                  className={`w-5 h-5 transform transition-transform ${
+                    isOpen ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
               </button>
               {isOpen && (
-                <div className="p-4 md:p-5 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-                   {/* Preserve line breaks in the answer */}
-                   <div className="text-gray-600 dark:text-gray-300 whitespace-pre-line leading-relaxed">
-                     {item.answer}
+                <div className="px-6 py-4 bg-gray-50">
+                   <div className="prose prose-sm max-w-none text-gray-600">
+                     {item.answer.split('\n\n').map((paragraph: string, pIndex: number) => (
+                       <div key={pIndex} className="mb-4">
+                         {paragraph.split('\n').map((line: string, lIndex: number) => (
+                           <p key={lIndex} className="mb-2">
+                             {line.startsWith('•') ? (
+                               <span className="flex items-start">
+                                 <span className="mr-2">•</span>
+                                 <span>{line.substring(1)}</span>
+                               </span>
+                             ) : line.match(/^\d+\./) ? (
+                               <span className="flex items-start">
+                                 <span className="mr-2 font-medium">{line.split('.')[0]}.</span>
+                                 <span>{line.split('.').slice(1).join('.')}</span>
+                               </span>
+                             ) : (
+                               line
+                             )}
+                           </p>
+                         ))}
+                       </div>
+                     ))}
                    </div>
                 </div>
               )}
