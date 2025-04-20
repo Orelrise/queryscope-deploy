@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -690,8 +690,11 @@ export default function Home() {
   const [siteUrl, setSiteUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [progressPercent, setProgressPercent] = useState(0);
   const [results, setResults] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -705,6 +708,14 @@ export default function Home() {
     e.preventDefault();
   };
 
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -715,6 +726,22 @@ export default function Home() {
 
     setLoading(true);
     setError(null);
+    setResults(null);
+    setProgressPercent(0);
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+
+    intervalRef.current = setInterval(() => {
+      setProgressPercent(prev => {
+        if (prev >= 95) {
+          if(intervalRef.current) clearInterval(intervalRef.current);
+          return 95;
+        }
+        return prev + 1;
+      });
+    }, 600);
 
     try {
       const formData = new FormData();
@@ -724,7 +751,6 @@ export default function Home() {
       formData.append('exclude_regex', excludeRegex);
       formData.append('site_url', siteUrl);
 
-      // Construct the full API endpoint URL
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       if (!apiUrl) {
         throw new Error("API URL environment variable not set.");
@@ -738,46 +764,46 @@ export default function Home() {
       });
       
       setResults(response.data);
+      setProgressPercent(100);
+
     } catch (err: any) {
       console.error('Error details:', err);
-      // Handle potential error structure differences
       let errorMessage = 'An error occurred during analysis';
       if (err.response?.data?.detail) {
         errorMessage = err.response.data.detail;
       } else if (err.message) {
-        errorMessage = err.message; // Include error message if detail is not available
+        errorMessage = err.message;
       }
       setError(typeof errorMessage === 'string' 
         ? errorMessage 
         : 'An error occurred during analysis');
+      setProgressPercent(0);
     } finally {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       setLoading(false);
     }
   };
 
   const handleExportCSV = (data: ResultsData) => {
-    // Vérifier que les données existent
     if (!data.all_non_brand_queries || !data.all_brand_queries) {
       console.error('Missing query data');
       return;
     }
 
-    // Fonction pour formater les nombres
     const formatNumber = (num: number): string => {
-      return num.toLocaleString('fr-FR'); // Utilise le format français avec espaces
+      return num.toLocaleString('fr-FR');
     };
 
-    // Fonction pour formater les pourcentages
     const formatPercent = (num: number): string => {
       return `${num.toFixed(1)}%`;
     };
 
-    // Fonction pour formater les positions
     const formatPosition = (num: number): string => {
       return num === Math.floor(num) ? num.toString() : num.toFixed(1);
     };
 
-    // Prepare all queries data
     const allQueries = [
       ...(data.all_non_brand_queries || []).map(q => ({
         ...q,
@@ -789,11 +815,8 @@ export default function Home() {
       }))
     ].sort((a, b) => b.clicks - a.clicks);
 
-    // Create CSV content with minimal formatting
     const csv = [
-      // Headers
       ['QUERY', 'TYPE', 'CLICKS', 'IMPRESSIONS', 'CTR', 'POSITION'],
-      // Queries data
       ...allQueries.map(q => [
         q.query,
         q.type,
@@ -802,15 +825,13 @@ export default function Home() {
         formatPercent(q.ctr),
         formatPosition(q.position)
       ]),
-      // Totals
       ['', '', '', '', '', ''],
       ['NON-BRAND TOTAL', '', formatNumber(data.non_brand_clicks), formatNumber(data.non_brand_impressions), formatPercent(data.non_brand_ctr), formatPosition(data.non_brand_avg_position)],
       ['BRAND TOTAL', '', formatNumber(data.brand_clicks), formatNumber(data.brand_impressions), formatPercent(data.brand_ctr), formatPosition(data.brand_avg_position)],
       ['HIDDEN TRAFFIC', '', formatNumber(data.unattributed_clicks), '', '', '']
     ].map(row => row.join(';')).join('\n');
 
-    // Create and download file
-    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' }); // Ajout du BOM pour Excel
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `queryscope_analysis.csv`;
@@ -818,28 +839,23 @@ export default function Home() {
   };
 
   const handleExportExcel = (data: ResultsData) => {
-    // Vérifier que les données existent
     if (!data.all_non_brand_queries || !data.all_brand_queries) {
       console.error('Missing query data');
       return;
     }
 
-    // Fonction pour formater les nombres
     const formatNumber = (num: number): string => {
       return num.toLocaleString('fr-FR');
     };
 
-    // Fonction pour formater les pourcentages
     const formatPercent = (num: number): string => {
       return `${num.toFixed(1)}%`;
     };
 
-    // Fonction pour formater les positions
     const formatPosition = (num: number): string => {
       return num === Math.floor(num) ? num.toString() : num.toFixed(1);
     };
 
-    // Prepare all queries data
     const allQueries = [
       ...(data.all_non_brand_queries || []).map(q => ({
         ...q,
@@ -851,11 +867,8 @@ export default function Home() {
       }))
     ].sort((a, b) => b.clicks - a.clicks);
 
-    // Create Excel data
     const excelData = [
-      // Headers
       ['QUERY', 'TYPE', 'CLICKS', 'IMPRESSIONS', 'CTR', 'POSITION'],
-      // Queries data
       ...allQueries.map(q => [
         q.query,
         q.type,
@@ -864,27 +877,40 @@ export default function Home() {
         formatPercent(q.ctr),
         formatPosition(q.position)
       ]),
-      // Empty row
       ['', '', '', '', '', ''],
-      // Totals
       ['NON-BRAND TOTAL', '', formatNumber(data.non_brand_clicks), formatNumber(data.non_brand_impressions), formatPercent(data.non_brand_ctr), formatPosition(data.non_brand_avg_position)],
       ['BRAND TOTAL', '', formatNumber(data.brand_clicks), formatNumber(data.brand_impressions), formatPercent(data.brand_ctr), formatPosition(data.brand_avg_position)],
       ['HIDDEN TRAFFIC', '', formatNumber(data.unattributed_clicks), '', '', '']
     ];
 
-    // Create workbook and worksheet
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(excelData);
 
-    // Add worksheet to workbook
     XLSX.utils.book_append_sheet(wb, ws, "Analysis");
 
-    // Generate Excel file
     XLSX.writeFile(wb, `queryscope_analysis.xlsx`);
   };
 
   return (
     <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+      {loading && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex justify-center items-center">
+          <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Analysis in Progress</h3>
+              <div className="mb-2 text-sm text-gray-500">Please wait, this may take a minute...</div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mb-4">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500 ease-linear"
+                  style={{ width: `${progressPercent}%` }}
+                ></div>
+              </div>
+              <div className="text-sm font-medium text-gray-700">{progressPercent}%</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-16">
           <div className="mb-12">
@@ -1058,7 +1084,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Overview Cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl p-4 border border-indigo-100">
                   <div className="flex items-center gap-2 mb-1">
@@ -1108,9 +1133,7 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Main Content */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Left Column - Non-Brand Analysis */}
                 <div className="space-y-6">
                   <div className="bg-white rounded-xl border border-indigo-100 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Non-Brand Performance</h3>
@@ -1151,7 +1174,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Right Column - Brand Analysis */}
                 <div className="space-y-6">
                   <div className="bg-white rounded-xl border border-violet-100 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-6">Brand Performance</h3>
@@ -1193,7 +1215,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Traffic Distribution Chart */}
               <div className="mt-8">
                 <div className="bg-white rounded-xl border border-gray-200 p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Traffic Distribution</h3>
