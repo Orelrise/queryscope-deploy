@@ -71,18 +71,21 @@ const HelpTooltip = ({ children, content }: { children: React.ReactNode, content
 // Ajouter le composant FAQ
 const FAQSection = () => {
   const [openItem, setOpenItem] = useState<number | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>('Getting Started'); // Default to the first category
 
+  // Updated category mapping with new order and indices
   const categories = {
-    'Getting Started': [0, 1, 4],
-    'Technical Setup': [2, 3],
-    'Why Non-Brand SEO Matters': [8],
-    'Analysis': [5, 6, 7],
+    'Getting Started': [0, 1],
+    'Why Non-Brand SEO Matters': [2],
+    'Technical Setup': [3, 4, 5],
+    'Understanding the Results': [6, 7, 8],
     'Troubleshooting': [9, 10, 11],
     'Glossary': [12, 13, 14, 15, 16, 17, 18]
   };
 
+  // Reordered faqItems array
   const faqItems: FAQItem[] = [
+    // Getting Started (0, 1)
     {
       question: "What is QueryScope and how does it work?",
       answer: `QueryScope is a powerful SEO analysis tool that helps you understand your true organic search performance by analyzing your Search Console data, focusing on non-brand traffic.
@@ -121,34 +124,36 @@ We recommend creating a dedicated service account with minimal permissions for a
       category: 'Getting Started',
       icon: '🔒'
     },
+    // Why Non-Brand SEO Matters (2) - Originally index 8
     {
-      question: "How does non-brand analysis work?",
-      answer: `The analysis uses a sophisticated pattern matching system to identify and exclude brand-related queries:
+      question: "Why focus on Non-Brand SEO?",
+      answer: `Understanding the 'why' behind non-brand analysis:
 
-1. Brand Detection
-   • Uses your custom regex pattern to identify brand queries
-   • Example: For "Apple", use "apple|iphone|macbook"
-   • Captures variations and misspellings if included
+1. True SEO Measurement:
+   • Brand traffic reflects existing brand strength, not necessarily SEO effectiveness.
+   • Non-brand traffic shows how well you attract users unaware of your brand.
+   • It's the key indicator of organic search growth potential.
 
-2. Classification Process:
-   • Brand: Queries matching your regex (excluded from analysis)
-   • Non-Brand: Queries not matching (focus of analysis)
-   • Hidden: Queries not provided by the API due to sampling
+2. Uncover Hidden Opportunities:
+   • Identify non-brand queries driving relevant traffic.
+   • Optimize content for these high-potential terms.
+   • Find gaps where competitors outperform.
 
-3. Analysis Includes:
-   • Non-brand click distribution
-   • Non-brand CTR analysis
-   • Position analysis for non-brand queries
-   • True SEO performance score
-   • Strategic recommendations for non-brand optimization
+3. Strategic Decision Making:
+   • Allocate SEO resources effectively.
+   • Measure the true impact of SEO campaigns.
+   • Validate content strategy success.
 
-Pro Tips:
-• Include all brand variations in your regex
-• Consider regional brand variations
-• Test your regex pattern before analysis`,
-      category: 'Technical Setup',
-      icon: '🔍'
+4. Competitive Edge:
+   • Understand user search intent beyond your brand.
+   • Capture market share from generic searches.
+   • Build long-term organic visibility.
+
+Focusing on non-brand SEO provides a clear view of your actual search engine performance and guides effective optimization strategies.`,
+      category: 'Why Non-Brand SEO Matters',
+      icon: '🎯'
     },
+    // Technical Setup (3, 4, 5) - Originally indices 3, 4, 2
     {
       question: "How to obtain and configure the Google Search Console JSON key?",
       answer: `Step-by-step guide to secure API access:
@@ -215,9 +220,38 @@ Security Best Practices:
    • Consistent Periods: Use same length for comparisons
    • Exclude Anomalies: Skip unusual event periods
    • Include Full Weeks: Start/end on same weekday`,
-      category: 'Getting Started',
+      category: 'Technical Setup', // Moved from Getting Started
       icon: '📅'
     },
+    {
+      question: "How does non-brand analysis work?",
+      answer: `The analysis uses a sophisticated pattern matching system to identify and exclude brand-related queries:
+
+1. Brand Detection
+   • Uses your custom regex pattern to identify brand queries
+   • Example: For "Apple", use "apple|iphone|macbook"
+   • Captures variations and misspellings if included
+
+2. Classification Process:
+   • Brand: Queries matching your regex (excluded from analysis)
+   • Non-Brand: Queries not matching (focus of analysis)
+   • Hidden: Queries not provided by the API due to sampling
+
+3. Analysis Includes:
+   • Non-brand click distribution
+   • Non-brand CTR analysis
+   • Position analysis for non-brand queries
+   • True SEO performance score
+   • Strategic recommendations for non-brand optimization
+
+Pro Tips:
+• Include all brand variations in your regex
+• Consider regional brand variations
+• Test your regex pattern before analysis`,
+      category: 'Technical Setup',
+      icon: '🔍'
+    },
+    // Understanding the Results (6, 7, 8) - Originally indices 5, 7, 6
     {
       question: "Understanding the Results",
       answer: `Comprehensive guide to interpreting your analysis:
@@ -248,37 +282,7 @@ Security Best Practices:
       category: 'Analysis',
       icon: '📊'
     },
-    {
-      question: "Data Quality and Limitations",
-      answer: `Understanding data accuracy and limitations:
-
-1. Search Console Sampling:
-   • What: GSC provides representative data sample
-   • Why: Processing efficiency for large datasets
-   • Impact: Minor variations from GSC interface
-   • Handling: Clearly marked in reports
-
-2. Data Processing:
-   • Real-time: Instant analysis in browser
-   • Accuracy: High-precision calculations
-   • Validation: Automated data checks
-   • Quality: Statistical significance maintained
-
-3. Known Limitations:
-   • 16-month historical limit
-   • 3-day reporting delay
-   • Query sampling for high-volume sites
-   • Position averaging for multiple appearances
-
-4. Best Practices:
-   • Regular analysis for trends
-   • Compare similar time periods
-   • Consider sampling in analysis
-   • Use relative metrics for decisions`,
-      category: 'Analysis',
-      icon: '📈'
-    },
-    {
+     {
       question: "Maximizing Analysis Value",
       answer: `Tips for getting the most from QueryScope:
 
@@ -314,216 +318,194 @@ Security Best Practices:
       category: 'Analysis',
       icon: '💡'
     },
-    // ---- Why Non-Brand SEO Matters Section ----
     {
-      question: "Why focus on Non-Brand SEO?",
-      answer: `Understanding the distinction between Brand and Non-Brand traffic is crucial for accurately assessing your SEO effectiveness.
+      question: "Data Quality and Limitations",
+      answer: `Understanding data accuracy and limitations:
 
-1. What is Brand Traffic?
-   • Searches directly containing your brand name, specific product names, or variations (e.g., "QueryScope", "QueryScope login").
-   • Reflects existing brand awareness and users specifically seeking you out.
-   • Typically has high CTR and top positions due to navigational intent.
+1. Search Console Sampling:
+   • What: GSC provides representative data sample
+   • Why: Processing efficiency for large datasets
+   • Impact: Minor variations from GSC interface
+   • Handling: Clearly marked in reports
 
-2. What is Non-Brand Traffic?
-   • Searches related to the problems you solve, the services you offer, or general industry terms, but WITHOUT mentioning your brand (e.g., "seo analysis tool", "how to measure non-brand seo").
-   • Represents users discovering solutions or exploring options, often unaware of your brand initially.
+2. Data Processing:
+   • Real-time: Instant analysis in browser
+   • Accuracy: High-precision calculations
+   • Validation: Automated data checks
+   • Quality: Statistical significance maintained
 
-3. Why is Non-Brand Traffic the "Pure" SEO Indicator?
-   • Acquisition Focus: It measures your ability to attract *new* users who aren't already familiar with you.
-   • Competitive Benchmark: It shows how well you perform against competitors on generic, high-value keywords.
-   • Market Relevance: It reflects your visibility on the actual topics and needs your target audience is searching for.
-   • Content Strategy Validation: Success here indicates your content effectively addresses user needs and search intent.
+3. Known Limitations:
+   • 16-month historical limit
+   • 3-day reporting delay
+   • Query sampling for high-volume sites
+   • Position averaging for multiple appearances
 
-4. Limitations of Relying Solely on Total Traffic:
-   • High brand traffic can mask underlying weaknesses in non-brand SEO.
-   • A drop in total traffic might be due to declining brand searches (market factors) rather than poor SEO.
-
-5. How QueryScope Helps:
-   • By isolating non-brand traffic, QueryScope provides a clear view of your true SEO performance in attracting new, relevant audiences based on their needs, not just your name recognition.`,
-      category: 'Why Non-Brand SEO Matters',
-      icon: '🎯'
+4. Best Practices:
+   • Regular analysis for trends
+   • Compare similar time periods
+   • Consider sampling in analysis
+   • Use relative metrics for decisions`,
+      category: 'Analysis',
+      icon: '📈'
     },
-    // ---- Troubleshooting Section ----
+    // Troubleshooting (9, 10, 11) - Original indices
     {
       question: "Why is my JSON key not working?",
-      answer: `Several reasons can cause JSON key issues:
+      answer: `Troubleshooting steps for key issues:
 
-1. Invalid Key Format:
-   • Ensure the file is a valid JSON downloaded from Google Cloud Console.
-   • Do not modify the file content.
+1. Common Errors:
+   • Incorrect JSON format
+   • Expired or revoked key
+   • Service account lacks GSC permissions
+   • API not enabled in Google Cloud
 
-2. Incorrect Permissions (Most Common):
-   • The Service Account linked to the key MUST have "Viewer" (Lecteur) permission on the Search Console property.
-   • Check permissions in GSC: Settings > Users and permissions.
-   • The Service Account email needs to be added as a user with Viewer rights.
+2. Verification Checklist:
+   • Ensure valid JSON structure
+   • Verify service account email added to GSC
+   • Confirm "Read-only" permission in GSC
+   • Check API enabled status in Cloud Console
+   • Regenerate key if suspected compromise
 
-3. API Not Enabled:
-   • The Google Search Console API must be enabled in your Google Cloud Project.
-   • Go to Google Cloud Console > APIs & Services > Enabled APIs & services.
+3. Permission Timing:
+   • Allow up to 24 hours for GSC permissions to propagate
 
-4. Expired Key:
-   • Service account keys don't expire by default, but check if any policy was applied.
+4. Error Messages:
+   • "Permission denied": Check GSC user settings
+   • "API not enabled": Check Cloud Console
+   • "Invalid credentials": Regenerate JSON key
 
-5. Wrong Property:
-   • Make sure the Service Account has access to the specific property URL you entered (e.g., domain property vs. URL prefix property).
-
-Troubleshooting Steps:
-• Double-check GSC permissions for the service account email.
-• Verify the Search Console API is enabled in Google Cloud.
-• Try generating a new key for the same service account.
-• Ensure the Website URL entered matches the GSC property format (e.g., example.com vs www.example.com).`,
+Still having issues? Double-check the setup guide or contact support.`,
       category: 'Troubleshooting',
-      icon: '🔧'
+      icon: '❓'
     },
     {
       question: "I'm getting an API error during analysis.",
-      answer: `API errors can occur for various reasons:
+      answer: `Common API errors and solutions:
 
-1. Quota Exceeded:
-   • Google Search Console API has usage limits (queries per minute, queries per day).
-   • If you run many analyses rapidly, you might hit these limits.
-   • Wait a few minutes or hours and try again.
-   • Check quotas in Google Cloud Console > APIs & Services > Google Search Console API > Quotas.
+1. Rate Limits Exceeded:
+   • Cause: Too many requests in short period
+   • Solution: Wait and retry; reduce analysis frequency
 
-2. Temporary Google Server Issues:
-   • Rarely, Google's API might experience temporary downtime.
-   • Check Google Cloud Status Dashboard if you suspect this.
-   • Try again later.
+2. Quota Exceeded:
+   • Cause: Project quota limits reached
+   • Solution: Check Google Cloud quotas; request increase if needed
 
-3. Invalid Date Range or Filters:
-   • Ensure the selected date range is valid (max 16 months, end date not before start date).
-   • Issues with the exclude regex might sometimes cause unexpected API request formats (less common).
+3. Invalid Request:
+   • Cause: Malformed request (e.g., bad date range)
+   • Solution: Verify input parameters; check date formats
 
-4. Network Issues:
-   • Your internet connection might be unstable.
-   • Try refreshing the page or checking your connection.
+4. Server Error (5xx):
+   • Cause: Temporary Google API issue
+   • Solution: Retry after a few minutes
 
-Error Message Detail:
-• Look closely at the error message provided by QueryScope. It often contains details from the Google API that can pinpoint the issue (e.g., "Quota exceeded", "Backend error").`,
+5. Debugging Steps:
+   • Note the exact error message
+   • Check Google Cloud API dashboard for status
+   • Simplify analysis (shorter period, fewer sites)
+   • Test JSON key validity`,
       category: 'Troubleshooting',
       icon: '⚙️'
     },
     {
       question: "Why do the numbers differ slightly from the GSC interface?",
-      answer: `Small discrepancies between QueryScope and the GSC web interface are normal and expected. Here's why:
+      answer: `Reasons for minor discrepancies:
 
-1. Data Freshness & Cache:
-   • GSC interface data can sometimes have a slight delay or use cached results differently than the API.
-   • The API generally provides the most up-to-date data (usually with a ~3-day lag).
+1. Data Sampling:
+   • GSC API may use slightly different sampling than the UI
+   • Especially noticeable for long periods or large sites
+   • QueryScope indicates potential sampling impact
 
-2. Sampling Differences:
-   • Both the GSC interface and the API use data sampling for large datasets. The exact samples might differ slightly, leading to minor variations in totals.
-   • QueryScope explicitly reports "Hidden Traffic" resulting from this sampling.
+2. Data Freshness:
+   • API data can have a slightly different delay than the UI
+   • Typically aligns within hours
 
-3. Timezone Handling:
-   • The GSC API typically uses UTC time, while the interface might adjust to your local timezone. QueryScope uses the API data directly.
+3. Calculation Differences:
+   • QueryScope applies specific non-brand filtering
+   • GSC UI might aggregate data differently
 
-4. API Request Granularity:
-   • QueryScope requests data specifically dimensioned by query, which might trigger slightly different processing on Google's side compared to the aggregated views in the interface.
+4. Timezone Handling:
+   • Ensure consistent timezone settings (PST for GSC)
 
-Key Takeaway:
-• Focus on trends, percentages, and relative performance rather than exact number matching. The insights derived remain valid.`,
+Focus on trends and relative performance rather than exact number matching.`,
       category: 'Troubleshooting',
-      icon: '📊'
+      icon: '📉'
     },
-    // ---- Glossary Section ----
+    // Glossary (12-18) - Original indices
     {
       question: "Clicks",
-      answer: `The number of times users clicked on your website links in Google search results for a given query.
-
-In QueryScope:
-• Total Clicks: All clicks recorded for the period.
-• Non-Brand Clicks: Clicks from queries NOT matching your exclude regex.
-• Brand Clicks: Clicks from queries matching your exclude regex.
-• Hidden Clicks: Clicks from queries not reported by the API due to sampling/privacy thresholds.`,
+      answer: "The number of times users clicked on your site's links in Google Search results for a specific query.",
       category: 'Glossary',
       icon: '🖱️'
     },
     {
       question: "Impressions",
-      answer: `The number of times any URL from your site appeared in search results viewed by a user (even if not scrolled into view). An impression is counted each time your link appears for a specific query.`,
+      answer: "The number of times links to your site appeared in Google Search results viewed by a user.",
       category: 'Glossary',
       icon: '👁️'
     },
     {
       question: "CTR (Click-Through Rate)",
-      answer: `The percentage of impressions that resulted in a click.
-
-Calculation: (Clicks / Impressions) * 100%
-
-Interpretation:
-• A high CTR suggests your search result snippet (title, description) is compelling for that query.
-• QueryScope shows CTR for Non-Brand and Brand traffic separately, allowing you to gauge the effectiveness of your snippets for different user intents.`,
+      answer: "The percentage of impressions that resulted in a click. Calculated as (Clicks / Impressions) * 100.",
       category: 'Glossary',
-      icon: '📈'
+      icon: '%'
     },
     {
       question: "Average Position",
-      answer: `The average ranking of your website URLs in the search results for a given query. Lower numbers are better (e.g., position 1 is the top result).
-
-Important Notes:
-• It's an average across all impressions for that query.
-• If your site appears multiple times (e.g., sitelinks), the topmost position is typically used for calculation.
-• QueryScope averages this across all Non-Brand or Brand queries.`,
+      answer: "The average ranking of your site's links in search results for a query or set of queries. Lower numbers are better.",
       category: 'Glossary',
-      icon: '🏆'
+      icon: '📊' // Reusing, consider finding a better one if needed
     },
     {
       question: "Non-Brand Traffic",
-      answer: `Search traffic originating from queries that DO NOT contain the brand keywords you defined in the "Keywords to exclude" regex.
-
-Significance:
-• Often considered a better reflection of pure SEO performance, as users are searching for topics, products, or services, not specifically your brand.
-• QueryScope focuses on analyzing this segment.`,
+      answer: "Clicks and impressions from search queries that do not contain your brand name or variations, as defined by your regex.",
       category: 'Glossary',
-      icon: '🔍'
+      icon: '📈' // Reusing
     },
     {
       question: "Brand Traffic",
-      answer: `Search traffic originating from queries that DO contain the brand keywords you defined in the "Keywords to exclude" regex.
-
-Significance:
-• Reflects brand awareness and users specifically looking for your company or products.
-• Typically has a higher CTR and better average position.`,
+      answer: "Clicks and impressions from search queries that contain your brand name or variations, matching your regex.",
       category: 'Glossary',
       icon: '🏢'
     },
     {
       question: "Hidden Traffic (Unattributed)",
-      answer: `Clicks and impressions that Google Search Console does not attribute to specific queries. This happens due to:
-
-1. Privacy Thresholds: Google anonymizes very rare or potentially sensitive queries.
-2. Sampling: For large datasets, GSC analyzes a sample, and some data might not be included in the query-specific results.
-
-QueryScope shows this as "Hidden Traffic" clicks in the overview.`,
+      answer: "Clicks and impressions from queries that Google Search Console does not report due to privacy thresholds or sampling.",
       category: 'Glossary',
-      icon: '❓'
+      icon: '👻'
     }
   ];
 
-  return (
-    <div id="guide" className="mt-16 glass-effect p-8 rounded-2xl shadow-lg animate-fade-in">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Guide</h2>
 
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button
-          onClick={() => setActiveCategory(null)}
-          className={`px-4 py-2 rounded-lg ${
-            !activeCategory
-              ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          All Categories
-        </button>
-        {Object.keys(categories).map((category) => (
+  const toggleItem = (index: number) => {
+    setOpenItem(openItem === index ? null : index);
+  };
+
+  const handleCategoryClick = (category: string | null) => {
+    setActiveCategory(category);
+    setOpenItem(null); // Close any open item when changing category
+  };
+
+  // Filter items based on active category
+  const filteredItems = activeCategory
+    ? faqItems.filter(item => item.category === activeCategory)
+    : faqItems; // Show all if activeCategory is null (though we removed the 'All' button)
+
+  return (
+    <div className="py-12 md:py-20 px-4 md:px-8 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-lg">
+      <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-16 text-gray-800 dark:text-white">
+        Frequently Asked Questions
+      </h2>
+
+      {/* Category Buttons - Removed "All Categories" */}
+      <div className="flex flex-wrap justify-center gap-2 mb-8 md:mb-12">
+        {Object.keys(categories).map(category => (
           <button
             key={category}
-            onClick={() => setActiveCategory(category)}
-            className={`px-4 py-2 rounded-lg ${
+            onClick={() => handleCategoryClick(category)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ease-in-out ${
               activeCategory === category
-                ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
             }`}
           >
             {category}
@@ -531,67 +513,39 @@ QueryScope shows this as "Hidden Traffic" clicks in the overview.`,
         ))}
       </div>
 
-      <div className="space-y-4">
-        {faqItems
-          .filter((item: FAQItem) => !activeCategory || item.category === activeCategory)
-          .map((item: FAQItem, index: number) => (
-            <div 
-              key={index}
-              className="border border-gray-100 rounded-xl overflow-hidden bg-white transition-all duration-300 hover:shadow-md"
-            >
+      {/* FAQ Items */}
+      <div className="max-w-4xl mx-auto space-y-4">
+        {filteredItems.map((item, index) => {
+          // Calculate the original index based on the active category filter
+          const originalIndex = activeCategory ? faqItems.findIndex(original => original.question === item.question) : index;
+          const isOpen = openItem === originalIndex;
+
+          return (
+            <div key={originalIndex} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
               <button
-                onClick={() => setOpenItem(openItem === index ? null : index)}
-                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-50"
+                onClick={() => toggleItem(originalIndex)}
+                className="w-full flex justify-between items-center p-4 md:p-5 text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+                aria-expanded={isOpen}
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">{item.icon}</span>
-                  <span className="font-medium text-gray-900">{item.question}</span>
-                </div>
-                <svg
-                  className={`w-5 h-5 transform transition-transform ${
-                    openItem === index ? 'rotate-180' : ''
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                <span className="flex items-center">
+                   <span className="mr-3 text-xl">{item.icon}</span>
+                  <span className="font-semibold text-gray-800 dark:text-white">{item.question}</span>
+                </span>
+                <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+                  <svg className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </span>
               </button>
-              {openItem === index && (
-                <div className="px-6 py-4 bg-gray-50">
-                  <div className="prose prose-sm max-w-none text-gray-600">
-                    {item.answer.split('\n\n').map((paragraph: string, pIndex: number) => (
-                      <div key={pIndex} className="mb-4">
-                        {paragraph.split('\n').map((line: string, lIndex: number) => (
-                          <p key={lIndex} className="mb-2">
-                            {line.startsWith('•') ? (
-                              <span className="flex items-start">
-                                <span className="mr-2">•</span>
-                                <span>{line.substring(1)}</span>
-                              </span>
-                            ) : line.match(/^\d+\./) ? (
-                              <span className="flex items-start">
-                                <span className="mr-2 font-medium">{line.split('.')[0]}.</span>
-                                <span>{line.split('.').slice(1).join('.')}</span>
-                              </span>
-                            ) : (
-                              line
-                            )}
-                          </p>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
+              {isOpen && (
+                <div className="p-4 md:p-5 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+                   {/* Preserve line breaks in the answer */}
+                   <div className="text-gray-600 dark:text-gray-300 whitespace-pre-line leading-relaxed">
+                     {item.answer}
+                   </div>
                 </div>
               )}
             </div>
-          ))}
+          );
+        })}
       </div>
     </div>
   );
