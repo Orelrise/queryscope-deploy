@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.5s ease-out;
+}
+
+.gradient-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(240, 240, 255, 0.9) 100%
+  );
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.button-gradient {
+  background: linear-gradient(135deg, #8C52FF 0%, #5CE1E6 100%);
+  transition: all 0.3s ease;
+}
+
+.button-gradient:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Unified Input Styles */
+input[type="text"],
+input[type="date"],
+.react-datepicker__input-container input {
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 0.75rem !important;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  color: #374151 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+.react-datepicker__input-container input:focus {
+  border-color: #A855F7 !important;
+  box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2) !important;
+}
+
+/* DatePicker Container */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* DatePicker Popup Styles */
+.react-datepicker {
+  font-family: inherit !important;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden !important;
+  padding: 0.5rem !important;
+}
+
+.react-datepicker__header {
+  background: white !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  padding: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.react-datepicker__current-month {
+  color: #374151 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+}
+
+.react-datepicker__day-names {
+  margin-top: 0.5rem !important;
+}
+
+.react-datepicker__day-name {
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+}
+
+.react-datepicker__day {
+  color: #374151 !important;
+  margin: 0.2rem !important;
+  width: 2rem !important;
+  line-height: 2rem !important;
+  font-size: 0.875rem !important;
+  border-radius: 0 !important;
+  transition: color 0.2s ease !important;
+}
+
+.react-datepicker__day:hover {
+  background: none !important;
+  color: #A855F7 !important;
+  cursor: pointer !important;
+}
+
+.react-datepicker__day--selected {
+  background: none !important;
+  color: #A855F7 !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background: none !important;
+  color: #A855F7 !important;
+}
+
+.react-datepicker__day--today {
+  font-weight: 600 !important;
+  color: #A855F7 !important;
+}
+
+.react-datepicker__day--outside-month {
+  color: #d1d5db !important;
+}
+
+.react-datepicker__navigation {
+  top: 0.75rem !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #6b7280 !important;
+  border-width: 2px 2px 0 0 !important;
+  height: 7px !important;
+  width: 7px !important;
+}
+
+/* Style pour la zone de drop */
+.dropzone-active {
+  border-color: #8C52FF !important;
+  background: rgba(140, 82, 255, 0.05) !important;
+}
+
+/* Modification du hover du dropzone */
+div[role="presentation"]:hover {
+  border-color: #8C52FF !important;
+}
+
+/* Style pour les statistiques */
+.stat-card {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Style pour le graphique */
+.chart-container {
+  transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: scale(1.02);
+} 
