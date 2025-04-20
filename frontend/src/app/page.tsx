@@ -8,6 +8,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import axios from 'axios';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import * as XLSX from 'xlsx';
+import Link from 'next/link';
 
 // Add at the top of the file, after imports
 interface QueryData {
@@ -915,25 +916,33 @@ export default function Home() {
             <p className="text-lg text-gray-600 font-medium">
               Understand Your True SEO Performance
             </p>
-            <a 
-              href="#guide"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition-all duration-200"
-            >
-              Guide
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
+              <a 
+                href="#guide"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition-all duration-200 shadow-sm"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </a>
+                Quick Guide
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </a>
+              <Link href="/documentation" legacyBehavior>
+                <a className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 shadow-sm">
+                  Documentation
+                  <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -1268,7 +1277,12 @@ export default function Home() {
 
         <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
           <p>© QueryScope 2025</p>
-          <p className="mt-1">
+          <div className="mt-2 space-x-4">
+            <Link href="#guide" legacyBehavior><a className="hover:text-gray-700 transition-colors">Guide</a></Link>
+            <span>|</span>
+            <Link href="/documentation" legacyBehavior><a className="hover:text-gray-700 transition-colors">Documentation</a></Link>
+          </div>
+          <p className="mt-2">
             Created by{' '}
             <a 
               href="https://www.linkedin.com/in/aur%C3%A9lien-pringarbe-4b57561b0/" 
