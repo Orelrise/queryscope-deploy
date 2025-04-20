@@ -1,6 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+
+// Données pour le graphique d'exemple
+const exampleChartData = [
+  { name: 'Non-Brand', value: 6000, percentage: 60, color: '#6366F1' }, // Indigo
+  { name: 'Brand', value: 4000, percentage: 40, color: '#A855F7' },     // Violet
+];
 
 export default function DocumentationPage() {
   return (
@@ -19,6 +26,23 @@ export default function DocumentationPage() {
           <section className="space-y-4">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Overview</h2>
             <p className="text-lg text-gray-700 leading-relaxed">QueryScope – Segment your GSC queries into branded and unbranded.</p>
+            
+            {/* Schéma de Segmentation CSS */}
+            <div className="my-8 p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <div className="text-center text-sm font-medium text-gray-700 mb-4">Processus de Segmentation Simplifié</div>
+              <div className="flex flex-col items-center space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4 sm:justify-center">
+                <div className="px-3 py-1 bg-blue-100 text-blue-800 rounded text-sm">Google Search Traffic</div>
+                <div className="text-gray-400 text-xl font-light sm:rotate-0 rotate-90">→</div>
+                <div className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-sm">Filtre "Marque" (Regex)</div>
+                <div className="text-gray-400 text-xl font-light sm:rotate-0 rotate-90">→</div>
+                <div className="flex flex-col space-y-1">
+                   <div className="px-3 py-1 bg-violet-100 text-violet-800 rounded text-sm">Clics Marque</div>
+                   <div className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded text-sm">Clics Hors-Marque</div>
+                </div>
+              </div>
+            </div>
+            {/* Fin Schéma */}
+
             <p className="text-gray-600 leading-relaxed">QueryScope is an SEO tool that automatically separates your Google Search Console (GSC) search query data into branded and non-branded categories. Branded search queries are those that include your brand name (including typos or alternate spellings), whereas non-branded queries do not include your brand name or any variant. By connecting directly to your GSC data, QueryScope provides a clear breakdown of how many clicks come from people searching for your brand versus people searching for generic terms relevant to your business. In practice, this means you can quickly see, for example, if "Apple Watch" searches (branded) are driving 40% of your organic clicks while generic searches like "best smartwatch" (non-branded) drive the other 60%. QueryScope solves the common headache of manually filtering and segmenting queries in GSC – it delivers the insights at a glance. This not only saves you time but also ensures reporting is accurate and focused on the right metrics. In short, QueryScope gives SEO professionals and marketers clarity on the makeup of their organic traffic, enabling better strategic decisions with minimal effort.</p>
           </section>
           
@@ -78,13 +102,53 @@ export default function DocumentationPage() {
               <li>Connect Your GSC Data: When you open QueryScope, you'll be prompted to provide access to your Google Search Console data. This is done by uploading a Google Cloud JSON key for a service account that has access to your site's GSC property. (If you're not sure how to get this, the tool's onboarding will explain the process – essentially you create a service account in Google Cloud, grant it access to your Search Console property, and download the key file.) This authentication method is secure and ensures QueryScope can fetch your data directly from Google.</li>
               <li>Configure Your Analysis: Next, specify the parameters for the analysis. You will enter a date range – select a start date and end date for the period you want to analyze. QueryScope allows up to 16 months of data in one go (which is the maximum range GSC's API supports). For example, you might choose January 1, 2024 – April 30, 2025 to cover nearly 16 months. Then, input your brand query pattern. This is usually your brand name and common variations, which the tool will use to identify branded queries. You can enter a simple word (e.g., "Apple") or a more complex regular expression for multiple terms (e.g., apple|iphone|macbook if your brand has several forms). QueryScope will validate this pattern to make sure it's a valid regex and not empty (since it's required to distinguish brand queries).</li>
               <li>Run the Segmentation: After configuration, hit the analyze button. QueryScope will connect to the GSC API behind the scenes and pull in all search query data for your site within the chosen date range. It fetches the data in batches (ensuring even large sites with many queries are fully retrieved). As data comes in, the tool applies the brand filter you provided: every query is checked against your brand regex. Queries that match the pattern are tagged as "Branded", and those that don't match are tagged as "Non-Branded". The tool then aggregates the total clicks for each group. Both the raw counts and percentage share of branded vs non-branded clicks are computed. (This calculation is very fast – even if there are tens of thousands of queries, QueryScope crunches them efficiently.)</li>
-              <li>View Your Results: Within seconds, you'll see the results displayed on the QueryScope dashboard. At the top, a summary might read, for example: "Total Clicks Analyzed: 10,000", followed by "Branded Clicks: 4,000 (40%)" and "Non-Branded Clicks: 6,000 (60%)" This gives you an immediate sense of the breakdown. Just below the summary, a visual pie chart is shown, with one slice representing branded clicks and the other representing non-branded. The chart is typically color-coded and labeled for clarity (e.g., Violet for Branded, Indigo for Non-Branded, with percentage labels on each slice). You can hover on the chart (if in an interactive interface) to see exact values.</li> 
+              <li>
+                View Your Results: Within seconds, you'll see the results displayed on the QueryScope dashboard. At the top, a summary might read, for example: "Total Clicks Analyzed: 10,000", followed by "Branded Clicks: 4,000 (40%)" and "Non-Branded Clicks: 6,000 (60%)" This gives you an immediate sense of the breakdown. Just below the summary, a visual pie chart is shown, with one slice representing branded clicks and the other representing non-branded. The chart is typically color-coded and labeled for clarity (e.g., Violet for Branded, Indigo for Non-Branded, with percentage labels on each slice). You can hover on the chart (if in an interactive interface) to see exact values.
+                
+                {/* Mini Graphique d'Exemple Ajouté Ici */}
+                <div className="my-6 flex justify-center">
+                  <div className="w-48 h-48">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={exampleChartData}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={70} // Plus petit rayon
+                          fill="#8884d8"
+                          dataKey="value"
+                          stroke="#ffffff" // Bordure blanche entre les parts
+                          strokeWidth={2}
+                        >
+                          {exampleChartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          formatter={(value: number, name: string, props: any) => [
+                            `${value.toLocaleString()} clicks (${props.payload.percentage.toFixed(0)}%)`,
+                            name
+                          ]}
+                          contentStyle={{
+                            backgroundColor: 'white',
+                            border: '1px solid #e5e7eb', // Bordure légère
+                            borderRadius: '8px',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+                            padding: '8px 12px',
+                            fontSize: '0.875rem' // Taille de police tooltip
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+                 {/* Fin Mini Graphique */}
+              </li> 
             </ol>
             <figure className="mt-6 p-4 border rounded-md bg-gray-50 text-center">
-                <figcaption className="text-sm text-gray-500 mb-2 italic">Example output: a pie chart of branded vs. non-branded click share.</figcaption>
-                {/* Placeholder for image if you add one later */}
-                {/* <img src="/path/to/chart-image.png" alt="Pie chart example" className="mx-auto"/> */}
-                <p className="text-gray-600 leading-relaxed text-sm mt-2">For example, QueryScope might reveal that out of 10,000 total organic clicks last month, 4,000 came from branded queries and 6,000 from non-branded queries. In the chart above, you can instantly see the branded segment (Violet, 40%) versus the non-branded segment (Indigo, 60%). This visual makes it easy to communicate the ratio to others – even someone not familiar with the data can see that "the majority of our traffic is from non-branded searches" in this case.</p>
+                <figcaption className="text-sm text-gray-500 mb-2 italic">Example output description</figcaption>
+                <p className="text-gray-600 leading-relaxed text-sm mt-2">For example, QueryScope might reveal that out of 10,000 total organic clicks last month, 4,000 came from branded queries and 6,000 from non-branded queries (represented visually above). This visual makes it easy to communicate the ratio to others – even someone not familiar with the data can see that "the majority of our traffic is from non-branded searches" in this case.</p>
             </figure>
             <ol start={5} className="list-decimal list-outside space-y-3 pl-6 text-gray-600 leading-relaxed">
                <li>Drill-down and Export: If you're interested in the details behind the summary, QueryScope provides options to dig deeper. You can download a CSV export that lists every query from the analysis, alongside its total clicks and whether it was classified as Branded or Non-Branded. This is useful if you want to see which queries are driving branded traffic (e.g., specific product names or misspellings people use for your brand) versus the top non-brand queries bringing in new visitors. Additionally, you can export the pie chart as an image (PNG) with a single click. This image can be used in presentations or reports. Because the chart is already labeled with percentages and categories, it serves as a quick snapshot of your branded vs non-branded performance.</li>
@@ -113,7 +177,24 @@ export default function DocumentationPage() {
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Limitations</h2>
             <p className="text-gray-600 leading-relaxed">While QueryScope is incredibly useful, it's important to understand its limitations and the context of the data it provides:</p>
             <ul className="list-disc list-outside space-y-3 pl-6 text-gray-600 leading-relaxed">
-              <li>Google Data Sampling & Omission: Google Search Console does not always report all queries, especially those with extremely low volumes or those filtered for privacy. This means the data QueryScope analyzes is an extensive sample of your traffic, but it may not include every single long-tail query. In practice, you might notice that if you add branded and non-branded clicks from QueryScope, the sum can be slightly lower than the total clicks reported in GSC's overview. Google's own documentation notes that filtering by queries (e.g., using "contains" or regex filters) might not capture 100% of the total, so filtered totals may not equal the unfiltered total. Implication: The percentages and numbers are accurate for the data retrieved, but consider them an approximation of the true total distribution. They are usually very close, but minor discrepancies are normal due to GSC's data aggregation methods.</li>
+              <li>
+                Google Data Sampling & Omission: Google Search Console does not always report all queries, especially those with extremely low volumes or those filtered for privacy. This means the data QueryScope analyzes is an extensive sample of your traffic, but it may not include every single long-tail query. 
+                
+                {/* Schéma Échantillonnage CSS */}
+                <div className="my-4 p-3 border border-gray-200 rounded-lg bg-gray-50 text-xs text-center">
+                  <div className="font-medium text-gray-600 mb-2">Concept d'Échantillonnage GSC</div>
+                  <div className="relative border-2 border-dashed border-gray-400 p-6 rounded">
+                    <span className="absolute -top-2 left-2 bg-gray-50 px-1 text-gray-500">Toutes les Recherches</span>
+                    <div className="border border-blue-300 bg-blue-50 p-3 rounded">
+                      <span className="text-blue-800">Données Rapportées par l'API GSC</span>
+                    </div>
+                    <div className="absolute -bottom-2 right-2 bg-gray-50 px-1 text-gray-500 italic">Différence = Échantillonnage & Confidentialité</div>
+                  </div>
+                </div>
+                {/* Fin Schéma */}
+
+                In practice, you might notice that if you add branded and non-branded clicks from QueryScope, the sum can be slightly lower than the total clicks reported in GSC's overview. Google's own documentation notes that filtering by queries (e.g., using "contains" or regex filters) might not capture 100% of the total, so filtered totals may not equal the unfiltered total. Implication: The percentages and numbers are accurate for the data retrieved, but consider them an approximation of the true total distribution. They are usually very close, but minor discrepancies are normal due to GSC's data aggregation methods.
+              </li>
               <li>Regex Pattern Accuracy: QueryScope's classification is only as good as the brand regex pattern you provide. If your regex is too broad or mis-specified, you might misclassify some queries. For example, if your brand is "Apple" but you also sell products that include the term "Apple" as part of a common phrase unrelated to your brand (e.g. "apple pie recipe"), those might be falsely tagged as branded unless your pattern is specific. Conversely, if your brand has multiple variations and you forget to include one in the pattern (e.g., you miss 'mac book' with a space), some branded queries will slip into the non-branded count. Recommendation: Double-check your brand pattern and consider common misspellings or spacing (e.g., "iphone" vs "i phone" vs "apple phone"). You can refine the regex as needed and rerun the analysis – QueryScope will quickly recompute the segmentation with the updated pattern.</li>
               <li>Requires GSC Access (Service Account): To use QueryScope, you must have Google Search Console access to the site in question and be able to set up a service account key. For most SEO professionals this is standard, but for beginners it could be a small hurdle. There's no OAuth login flow in the current version – the tool specifically uses the JSON key method. This is a deliberate design choice for a secure, accountless experience, but it does mean the user has to go through a few steps to obtain the key. Detailed instructions are provided, and it's generally a one-time setup. Just be aware that without GSC property access, QueryScope cannot fetch any data.</li>
               <li>Focus on Clicks (Not Impressions/CTR): QueryScope V0 is centered on segmenting clicks by query type. It does not separately analyze impressions, click-through rate (CTR), or average position by branded vs non-branded (at least, not in the current version). It simply takes whatever queries and click counts GSC provides and splits them. If you need to analyze impressions or CTR differences between branded and non-branded queries, you would need to do a more custom analysis (which might be a feature in a future version). Similarly, QueryScope doesn't currently break down data by other dimensions like country, device, or page – it's purely query-focused segmentation. The tool's simplicity is its strength, but it means it's specialized for that one job.</li>
