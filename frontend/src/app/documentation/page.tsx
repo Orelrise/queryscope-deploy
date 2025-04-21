@@ -10,6 +10,18 @@ const exampleChartData = [
 ];
 
 export default function DocumentationPage() {
+  // Définir les sections pour le sommaire
+  const sections = [
+    { id: 'overview', title: 'Overview' },
+    { id: 'why-it-matters', title: 'Why It Matters' },
+    { id: 'queryscope-advantage', title: 'The QueryScope Advantage' },
+    { id: 'who-its-for', title: 'Who It\'s For' },
+    { id: 'key-features', title: 'Key Features' },
+    { id: 'how-it-works', title: 'How It Works' },
+    { id: 'use-cases', title: 'Use Cases' },
+    { id: 'limitations', title: 'Limitations' },
+  ];
+
   return (
     <main className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white p-8 sm:p-12 rounded-lg shadow-md">
@@ -23,7 +35,22 @@ export default function DocumentationPage() {
         <article className="space-y-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 border-b pb-4 mb-8">QueryScope Documentation</h1>
           
-          <section className="space-y-4">
+          {/* Sommaire Ajouté Ici */}
+          <div className="mb-10 p-4 border border-gray-200 rounded-lg bg-gray-50/50">
+            <h3 className="text-lg font-semibold text-gray-700 mb-3">Table of Contents</h3>
+            <ul className="list-disc list-inside space-y-1">
+              {sections.map((section) => (
+                <li key={section.id}>
+                  <a href={`#${section.id}`} className="text-indigo-600 hover:text-indigo-800 hover:underline">
+                    {section.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* Fin Sommaire */}
+
+          <section id="overview" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Overview</h2>
             <p className="text-lg text-gray-700 leading-relaxed">QueryScope – Segment your GSC queries into branded and unbranded.</p>
             
@@ -48,7 +75,7 @@ export default function DocumentationPage() {
           
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="why-it-matters" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Why It Matters</h2>
             <p className="text-gray-600 leading-relaxed">Understanding the split between branded and non-branded traffic is crucial for any SEO strategy. Branded searches often come from existing customers or people already aware of your brand (often navigational intent), while non-branded searches come from people who may not know your brand yet (informational or commercial intent). Non-branded search terms tend to drive new visitors to your site, and are usually more competitive to rank for – but they represent growth opportunities in reaching new audiences. Branded terms, on the other hand, are usually easier to rank for (you naturally rank for your own brand) and indicate existing brand interest or loyalty. By measuring the share of branded vs. non-branded clicks, you get a better understanding of your organic performance. For instance, if your company just ran a big marketing campaign (TV, social media, etc.), you might see a spike in organic traffic. Without segmentation, you might attribute this spike to SEO improvements, when in reality it was people searching for your brand after seeing the campaign. Splitting the traffic into branded and non-branded lets you see that effect clearly. It answers questions like: "Are we attracting new organic visitors or just people who already know us?" and "How reliant is our organic traffic on brand recognition?".</p>
             <p className="text-gray-600 leading-relaxed">Without proper segmentation, SEO performance can be misinterpreted. In many cases, reporting without this context can be misleading. One might look at total clicks and proudly conclude "90% of our clicks are thanks to all the hard SEO work – and of course, none of those are just people searching our brand name." (see the humorous example above). In reality, a large portion could be branded searches that don't reflect new user acquisition. QueryScope prevents such misunderstandings by clearly delineating which clicks come from brand-driven queries vs. generic queries. This clarity is valuable for demonstrating the true impact of your SEO efforts. It ensures that when you report on "SEO performance," everyone understands how much of it came from organic growth versus existing brand demand. In summary, QueryScope matters because it brings transparency to your organic search data. It helps you:</p>
@@ -62,7 +89,7 @@ export default function DocumentationPage() {
           
           {/* Nouvelle Section "QueryScope Advantage" */}
           <hr className="my-10 border-gray-200"/>
-          <section className="space-y-8">
+          <section id="queryscope-advantage" className="space-y-6 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">The QueryScope Advantage: Streamlining Your Workflow</h2>
             <p className="text-gray-600 leading-relaxed">Manually segmenting GSC data can be time-consuming and error-prone. Here's how QueryScope simplifies each step:</p>
 
@@ -119,7 +146,7 @@ export default function DocumentationPage() {
 
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="who-its-for" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Who It's For</h2>
             <p className="text-gray-600 leading-relaxed">QueryScope is designed for SEO-minded professionals and organizations who want deeper insights from Search Console. Key users include:</p>
             <ul className="list-disc list-outside space-y-2 pl-6 text-gray-600 leading-relaxed">
@@ -134,7 +161,7 @@ export default function DocumentationPage() {
 
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="key-features" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Key Features</h2>
             <p className="text-gray-600 leading-relaxed">QueryScope focuses on delivering a fast, focused analysis of your GSC query data. Its key features include:</p>
             <ul className="list-disc list-outside space-y-2 pl-6 text-gray-600 leading-relaxed">
@@ -152,7 +179,7 @@ export default function DocumentationPage() {
 
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="how-it-works" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">How It Works</h2>
             <p className="text-gray-600 leading-relaxed">Using QueryScope is straightforward and doesn't require technical expertise beyond having access to your Search Console data. Here's a step-by-step look at how it works:</p>
             <ol className="list-decimal list-outside space-y-3 pl-6 text-gray-600 leading-relaxed">
@@ -215,7 +242,7 @@ export default function DocumentationPage() {
 
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="use-cases" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Use Cases</h2>
             <p className="text-gray-600 leading-relaxed">To better illustrate how QueryScope can be applied in real-world scenarios, here are a few common use cases and examples:</p>
             <ul className="list-disc list-outside space-y-3 pl-6 text-gray-600 leading-relaxed">
@@ -230,7 +257,7 @@ export default function DocumentationPage() {
 
           <hr className="my-10 border-gray-200"/>
 
-          <section className="space-y-4">
+          <section id="limitations" className="space-y-4 scroll-mt-20">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">Limitations</h2>
             <p className="text-gray-600 leading-relaxed">While QueryScope is incredibly useful, it's important to understand its limitations and the context of the data it provides:</p>
             <ul className="list-disc list-outside space-y-3 pl-6 text-gray-600 leading-relaxed">

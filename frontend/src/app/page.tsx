@@ -10,6 +10,9 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import * as XLSX from 'xlsx';
 import Link from 'next/link';
 
+// Import the new Header component
+import Header from '../components/Header';
+
 // Add at the top of the file, after imports
 interface QueryData {
   query: string;
@@ -892,7 +895,9 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <main className="bg-white px-4 sm:px-6 lg:px-8">
+      <Header />
+
       {loading && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex justify-center items-center">
           <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
