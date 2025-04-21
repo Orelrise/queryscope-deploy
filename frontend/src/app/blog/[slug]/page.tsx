@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import postsData from '@/blog/posts.json';
-// Removed Header import, re-add with correct path if needed: import Header from '@/components/Header'; 
+import Header from '@/components/Header';
+import TableOfContents from '@/components/blog/TableOfContents';
 
 // Define the interface for a blog post based on posts.json
 interface Post {
@@ -38,8 +39,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const relatedPosts = posts.filter((p: Post) => p.slug !== params.slug);
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* <Header /> */}
+    <div className="min-h-screen flex flex-col bg-white">
+      <Header />
       <main className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <article>
           <header className="mb-8">
@@ -51,6 +52,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               Published on {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </header>
+
+          {/* Insert the Table of Contents component here */}
+          <TableOfContents content={post.content} />
 
           {/* Use prose for nice article formatting - ensure Tailwind typography plugin is installed */}
           <div
@@ -70,20 +74,28 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </div>
         </article>
 
-        {/* Related Articles Section */}
+        {/* Related Articles Section - Enhanced Styling */}
         {relatedPosts.length > 0 && (
-          <section className="mt-16 pt-8 border-t border-gray-200">
-            {/* Changed heading to English */}
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Related Articles</h2>
-            <div className="grid gap-6 sm:grid-cols-2">
+          <section className="mt-16 pt-12 border-t-2 border-gray-100">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-8 text-center">Related Articles</h2>
+            <div className="grid gap-8 sm:grid-cols-2">
               {relatedPosts.map((relatedPost) => (
-                <div key={relatedPost.slug} className="bg-gray-50 rounded-lg p-4 border border-gray-100 hover:shadow-sm transition-shadow duration-200">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-700">
-                    <Link href={`/blog/${relatedPost.slug}`}>
-                      <span className="hover:text-purple-600 cursor-pointer">{relatedPost.title}</span>
+                // Enhanced related post card styling
+                <div key={relatedPost.slug} className="bg-white rounded-lg border border-gray-200 overflow-hidden group hover:shadow-md transition-shadow duration-200 flex flex-col">
+                  <div className="p-5 flex flex-col flex-grow">
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800 group-hover:text-purple-700 transition-colors duration-200">
+                      <Link href={`/blog/${relatedPost.slug}`}>
+                        <span className="cursor-pointer">{relatedPost.title}</span>
+                      </Link>
+                    </h3>
+                    <p className="text-gray-600 text-sm flex-grow">{relatedPost.excerpt}</p>
+                    <Link href={`/blog/${relatedPost.slug}`} className="mt-3 self-start">
+                       <span className="inline-flex items-center text-sm text-purple-600 group-hover:text-purple-800 font-medium transition-colors duration-200">
+                         Read more
+                         <svg className="ml-1 w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                       </span>
                     </Link>
-                  </h3>
-                  <p className="text-gray-600 text-sm">{relatedPost.excerpt}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -91,7 +103,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         )}
 
       </main>
-       <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500 pb-8">
+       <footer className="bg-gray-50 border-t border-gray-200 mt-16 py-6 text-center text-sm text-gray-500">
         <p>© QueryScope 2025</p>
       </footer>
     </div>
