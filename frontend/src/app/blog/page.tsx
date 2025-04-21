@@ -41,10 +41,20 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-neutral-950">
       <Header />
+
+      {/* New Blog Hero Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 dark:from-purple-900 via-gray-50 dark:via-neutral-950 to-cyan-50 dark:to-cyan-900">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-neutral-900 dark:text-neutral-100 tracking-tight mb-4">
+            The QueryScope <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Blog</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 dark:text-neutral-300 max-w-2xl mx-auto">
+            Actionable insights, practical guides, and updates on non-brand SEO analysis.
+          </p>
+        </div>
+      </section>
+
       <div className="container mx-auto px-4 py-12 flex-grow">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center text-gray-800 dark:text-neutral-100">Blog</h1>
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-12 text-lg">Insights, guides, and updates from the QueryScope team.</p>
-        
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Map over sortedPosts which now contains metadata */} 
           {sortedPosts.map((post) => (
