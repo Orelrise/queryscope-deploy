@@ -19,7 +19,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
   while ((match = regex.exec(content)) !== null) {
     headings.push({
       id: match[1],
-      text: match[2],
+      text: match[2].trim(), // Trim potential whitespace
     });
   }
 
@@ -29,14 +29,17 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
 
   return (
     <div className="mb-10 p-1 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-md">
-      <div className="bg-white dark:bg-neutral-900 rounded-md p-4">
-        <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200 border-b border-neutral-200 dark:border-neutral-700 pb-2">In this Article</h3>
-        <ul className="space-y-2.5 mt-3">
+      <div className="bg-white dark:bg-neutral-900 rounded-md p-6">
+        <h3 className="text-xl font-bold mb-5 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 border-b border-neutral-200 dark:border-neutral-700 pb-3">
+          In this Article
+        </h3>
+        <ul className="space-y-3">
           {headings.map((heading) => (
-            <li key={heading.id}>
+            <li key={heading.id} className="flex items-start group">
+              <span className="mr-3 mt-[0.3rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 dark:from-purple-500 dark:to-pink-500 group-hover:scale-125 transition-transform duration-150"></span>
               <a
                 href={`#${heading.id}`}
-                className="text-sm text-sky-700 dark:text-sky-400 hover:text-sky-900 dark:hover:text-sky-300 hover:underline transition-colors duration-150"
+                className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-purple-700 dark:hover:text-purple-400 transition-colors duration-150"
               >
                 {heading.text}
               </a>
