@@ -28,20 +28,22 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
   }
 
   return (
-    <div className="mb-8 p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-neutral-50 dark:bg-neutral-800 shadow-sm">
-      <h3 className="text-lg font-semibold mb-3 text-neutral-800 dark:text-neutral-200">Table of Contents</h3>
-      <ul className="space-y-2">
-        {headings.map((heading) => (
-          <li key={heading.id}>
-            <a
-              href={`#${heading.id}`}
-              className="text-sky-600 dark:text-sky-400 hover:text-sky-800 dark:hover:text-sky-300 hover:underline transition-colors duration-150 text-sm"
-            >
-              {heading.text}
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div className="mb-10 p-1 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-md">
+      <div className="bg-white dark:bg-neutral-900 rounded-md p-4">
+        <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200 border-b border-neutral-200 dark:border-neutral-700 pb-2">In this Article</h3>
+        <ul className="space-y-2.5 mt-3">
+          {headings.map((heading) => (
+            <li key={heading.id}>
+              <a
+                href={`#${heading.id}`}
+                className="text-sm text-sky-700 dark:text-sky-400 hover:text-sky-900 dark:hover:text-sky-300 hover:underline transition-colors duration-150"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

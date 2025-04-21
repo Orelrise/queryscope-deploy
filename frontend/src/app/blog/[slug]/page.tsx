@@ -1,96 +1,149 @@
-'use client';
-
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import postsData from '@/blog/posts.json';
 import Header from '@/components/Header';
 import TableOfContents from '@/components/blog/TableOfContents';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 
-// Define the interface for a blog post based on posts.json
-interface Post {
+const postsDirectory = path.join(process.cwd(), 'src/blog/posts');
+
+// Define interface for post metadata (used for related posts)
+interface PostMetadata {
   slug: string;
   title: string;
   date: string;
-  excerpt: string; // Keep for type consistency, even if not used here
+  excerpt: string;
+}
+
+// Define interface for full post data (frontmatter + content)
+interface PostData extends PostMetadata {
   content: string;
 }
 
-// Cast the imported JSON data to the Post array type
-const posts: Post[] = postsData as Post[];
-
-// Function to get post data based on slug
-// Ensures the return type is correctly typed or undefined
-function getPostBySlug(slug: string): Post | undefined {
-  // Ensure posts is treated as an array of Post objects
-  return posts.find((post: Post) => post.slug === slug);
+// Function to get all post metadata (needed for related posts)
+// Duplicated from blog/page.tsx logic for encapsulation here
+function getAllPostMetadata(): PostMetadata[] {
+  const fileNames = fs.readdirSync(postsDirectory);
+  const markdownPosts = fileNames.filter((fn) => fn.endsWith('.mdx'));
+  
+  const posts = markdownPosts.map((fileName) => {
+    const filePath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const matterResult = matter(fileContents);
+    return {
+      title: matterResult.data.title || 'Untitled',
+      date: matterResult.data.date || new Date().toISOString(),
+      excerpt: matterResult.data.excerpt || '',
+      slug: matterResult.data.slug || fileName.replace(/\.mdx$/, ''),
+    };
+  });
+  // Sort posts by date, newest first, to potentially show recent related posts
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+// Generate static paths for all posts
+export async function generateStaticParams() {
+  const fileNames = fs.readdirSync(postsDirectory);
+  const paths = fileNames
+    .filter((fn) => fn.endsWith('.mdx'))
+    .map((fileName) => ({
+      slug: fileName.replace(/\.mdx$/, ''),
+    }));
+  return paths;
+}
+
+// Function to get post data based on slug from MDX file
+function getPostBySlug(slug: string): PostData | undefined {
+  const fullPath = path.join(postsDirectory, `${slug}.mdx`);
+  try {
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    if (!data.title || !data.date || !data.slug || !content) {
+      console.warn(`Missing frontmatter or content in ${slug}.mdx`);
+      return undefined;
+    }
+
+    return {
+      slug: data.slug,
+      title: data.title,
+      date: data.date,
+      excerpt: data.excerpt || '',
+      content: content,
+    };
+  } catch (error) {
+    console.error(`Error reading post ${slug}:`, error);
+    return undefined;
+  }
+}
+
+// The Page component is now async
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug);
 
-  // If post not found, trigger 404 using Next.js notFound utility
   if (!post) {
     notFound();
-     // It's good practice to return null here although notFound should stop execution
-    return null;
   }
 
-  // Filter out the current post to get related posts
-  const relatedPosts = posts.filter((p: Post) => p.slug !== params.slug);
+  // Get metadata for all posts to find related ones
+  const allPostsMetadata = getAllPostMetadata();
+  const relatedPosts = allPostsMetadata
+    .filter((p) => p.slug !== post.slug) // Exclude current post
+    .slice(0, 2); // Take the first 2 other posts
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
       <Header />
-      <main className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-neutral-800 dark:text-neutral-200">
         <article>
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 leading-tight">
               {post.title}
             </h1>
-            <p className="text-sm text-gray-500">
-              {/* Changed date format to en-US and text */}
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Published on {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Created by Aurelien</p>
           </header>
 
-          {/* Insert the Table of Contents component here */}
           <TableOfContents content={post.content} />
 
-          {/* Use prose for nice article formatting - ensure Tailwind typography plugin is installed */}
           <div
-            className="prose prose-lg max-w-none prose-indigo prose-a:text-purple-600 hover:prose-a:text-purple-800 prose-strong:font-semibold"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+            className="prose prose-lg max-w-none prose-indigo dark:prose-invert prose-a:text-purple-600 hover:prose-a:text-purple-800 dark:prose-a:text-purple-400 dark:hover:prose-a:text-purple-300 prose-strong:font-semibold"
+          >
+            {/* @ts-expect-error Async Server Component */}
+            <MDXRemote source={post.content} />
+          </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            {/* Removed legacyBehavior from Link and used a span inside */}
+          <div className="mt-12 pt-8 border-t border-gray-200 dark:border-neutral-700">
             <Link href="/blog">
-              <span className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors cursor-pointer">
+              <span className="inline-flex items-center text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300 transition-colors cursor-pointer">
                 <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                {/* Changed text to English */}
                 Back to Blog
               </span>
             </Link>
           </div>
         </article>
 
-        {/* Related Articles Section - Enhanced Styling */}
         {relatedPosts.length > 0 && (
-          <section className="mt-16 pt-12 border-t-2 border-gray-100">
-            <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-8 text-center">Related Articles</h2>
+          <section className="mt-16 pt-12 border-t-2 border-gray-100 dark:border-neutral-800">
+            <h2 className="text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-200 mb-8 text-center">
+              Related Articles
+            </h2>
             <div className="grid gap-8 sm:grid-cols-2">
               {relatedPosts.map((relatedPost) => (
-                // Enhanced related post card styling
-                <div key={relatedPost.slug} className="bg-white rounded-lg border border-gray-200 overflow-hidden group hover:shadow-md transition-shadow duration-200 flex flex-col">
-                  <div className="p-5 flex flex-col flex-grow">
-                    <h3 className="text-lg font-semibold mb-2 text-gray-800 group-hover:text-purple-700 transition-colors duration-200">
+                <div key={relatedPost.slug} className="rounded-lg p-1 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-md hover:shadow-lg transition-shadow duration-300">
+                  <div className="bg-white dark:bg-neutral-900 rounded-md p-5 flex flex-col flex-grow h-full">
+                    <h3 className="text-lg font-semibold mb-2 text-neutral-800 dark:text-neutral-200 group-hover:text-purple-700 transition-colors duration-200">
                       <Link href={`/blog/${relatedPost.slug}`}>
                         <span className="cursor-pointer">{relatedPost.title}</span>
                       </Link>
                     </h3>
-                    <p className="text-gray-600 text-sm flex-grow">{relatedPost.excerpt}</p>
-                    <Link href={`/blog/${relatedPost.slug}`} className="mt-3 self-start">
-                       <span className="inline-flex items-center text-sm text-purple-600 group-hover:text-purple-800 font-medium transition-colors duration-200">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm flex-grow mb-3">{relatedPost.excerpt}</p>
+                    <Link href={`/blog/${relatedPost.slug}`} className="mt-auto self-start">
+                       <span className="inline-flex items-center text-sm text-purple-600 dark:text-purple-400 group-hover:text-purple-800 dark:group-hover:text-purple-300 font-medium transition-colors duration-200">
                          Read more
                          <svg className="ml-1 w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                        </span>
@@ -103,8 +156,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         )}
 
       </main>
-       <footer className="bg-gray-50 border-t border-gray-200 mt-16 py-6 text-center text-sm text-gray-500">
+       <footer className="bg-gray-50 dark:bg-neutral-900 border-t border-gray-200 dark:border-neutral-800 mt-16 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
         <p>© QueryScope 2025</p>
+        <p className="mt-1">
+          Created by <a href="https://www.linkedin.com/in/aur%C3%A9lien-pringarbe-4b57561b0/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">Aurélien Pringarbe</a>
+        </p>
       </footer>
     </div>
   );

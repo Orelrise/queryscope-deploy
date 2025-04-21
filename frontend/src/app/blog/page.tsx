@@ -1,43 +1,74 @@
-'use client';
-
 import Link from 'next/link';
-import posts from '@/blog/posts.json';
 import Header from '@/components/Header';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 
-interface Post {
+// Update the Post interface if needed (content is no longer directly here)
+interface PostMetadata {
   slug: string;
   title: string;
   date: string;
   excerpt: string;
-  content: string;
+}
+
+// Function to get all post metadata
+function getPostMetadata(): PostMetadata[] {
+  const postsDirectory = path.join(process.cwd(), 'src/blog/posts'); // Adjusted path
+  const fileNames = fs.readdirSync(postsDirectory);
+  const markdownPosts = fileNames.filter((fn) => fn.endsWith('.mdx'));
+  
+  const posts = markdownPosts.map((fileName) => {
+    const filePath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const matterResult = matter(fileContents);
+    return {
+      title: matterResult.data.title,
+      date: matterResult.data.date,
+      excerpt: matterResult.data.excerpt,
+      slug: matterResult.data.slug, // Ensure slug is in frontmatter
+    };
+  });
+
+  return posts;
 }
 
 export default function BlogPage() {
+  const postMetadata = getPostMetadata();
   // Sort posts by date, newest first
-  const sortedPosts: Post[] = [...posts].sort((a: Post, b: Post) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedPosts = [...postMetadata].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-neutral-950">
       <Header />
       <div className="container mx-auto px-4 py-12 flex-grow">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center text-gray-800">Blog</h1>
-        <p className="text-center text-gray-600 mb-12 text-lg">Insights, guides, and updates from the QueryScope team.</p>
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center text-gray-800 dark:text-neutral-100">Blog</h1>
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-12 text-lg">Insights, guides, and updates from the QueryScope team.</p>
         
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {sortedPosts.map((post: Post) => (
-            <div key={post.slug} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col group border border-transparent hover:border-indigo-300 hover:shadow-lg transition-all duration-300 ease-in-out">
-              <div className="w-full h-48 bg-gradient-to-br from-indigo-100 to-purple-100"></div> 
+          {/* Map over sortedPosts which now contains metadata */} 
+          {sortedPosts.map((post) => (
+            <div key={post.slug} className="bg-white dark:bg-neutral-900 rounded-xl shadow-md overflow-hidden flex flex-col group border border-transparent hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-lg transition-all duration-300 ease-in-out">
+              {/* Optional: Add image based on frontmatter if available */}
+              <div className="w-full h-48 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900"></div> 
               
               <div className="p-6 flex flex-col flex-grow">
-                <h2 className="text-xl lg:text-2xl font-semibold mb-2 text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
+                <h2 className="text-xl lg:text-2xl font-semibold mb-2 text-gray-800 dark:text-neutral-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
                   <Link href={`/blog/${post.slug}`}>
+                    {/* Use post.title from metadata */}
                     <span className="cursor-pointer">{post.title}</span>
                   </Link>
                 </h2>
-                <p className="text-gray-500 text-sm mb-4">{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                <p className="text-gray-600 mb-4 flex-grow">{post.excerpt}</p>
+                {/* Use post.date from metadata */}
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-1">
+                  {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+                {/* Added Author Line */}
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">Created by Aurelien</p>
+                {/* Use post.excerpt from metadata */}
+                <p className="text-gray-600 dark:text-gray-300 mb-4 flex-grow">{post.excerpt}</p>
                 <Link href={`/blog/${post.slug}`}>
-                  <span className="inline-flex items-center text-indigo-500 group-hover:text-indigo-700 font-medium transition-colors duration-200">
+                  <span className="inline-flex items-center text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 font-medium transition-colors duration-200">
                     Read more
                     <svg className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                   </span>
@@ -47,8 +78,11 @@ export default function BlogPage() {
           ))}
         </div>
       </div>
-      <footer className="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
+      <footer className="bg-white dark:bg-neutral-900 border-t border-gray-200 dark:border-neutral-800 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
         <p>© QueryScope 2025</p>
+        <p className="mt-1">
+          Created by <a href="https://www.linkedin.com/in/aur%C3%A9lien-pringarbe-4b57561b0/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">Aurélien Pringarbe</a>
+        </p>
       </footer>
     </div>
   );
