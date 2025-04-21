@@ -113,7 +113,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <div
             className="prose prose-lg max-w-none prose-indigo dark:prose-invert prose-a:text-purple-600 hover:prose-a:text-purple-800 dark:prose-a:text-purple-400 dark:hover:prose-a:text-purple-300 prose-strong:font-semibold"
           >
-            {/* @ts-expect-error Async Server Component */}
             <MDXRemote source={post.content} />
           </div>
 
