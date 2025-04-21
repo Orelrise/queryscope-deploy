@@ -282,7 +282,7 @@ Pro Tips:
       category: 'Analysis',
       icon: '📊'
     },
-     {
+    {
       question: "Maximizing Analysis Value",
       answer: `Tips for getting the most from QueryScope:
 
@@ -529,8 +529,8 @@ Focus on trends and relative performance rather than exact number matching.`,
                 aria-expanded={isOpen}
               >
                 <div className="flex items-center gap-3">
-                   <span className="text-xl">{item.icon}</span>
-                   <span className="font-medium text-gray-900">{item.question}</span>
+                  <span className="text-xl">{item.icon}</span>
+                  <span className="font-medium text-gray-900">{item.question}</span>
                 </div>
                 <svg
                   className={`w-5 h-5 transform transition-transform ${
@@ -550,29 +550,29 @@ Focus on trends and relative performance rather than exact number matching.`,
               </button>
               {isOpen && (
                 <div className="px-6 py-4 bg-gray-50">
-                   <div className="prose prose-sm max-w-none text-gray-600">
-                     {item.answer.split('\n\n').map((paragraph: string, pIndex: number) => (
-                       <div key={pIndex} className="mb-4">
-                         {paragraph.split('\n').map((line: string, lIndex: number) => (
-                           <p key={lIndex} className="mb-2">
-                             {line.startsWith('•') ? (
-                               <span className="flex items-start">
-                                 <span className="mr-2">•</span>
-                                 <span>{line.substring(1)}</span>
-                               </span>
-                             ) : line.match(/^\d+\./) ? (
-                               <span className="flex items-start">
-                                 <span className="mr-2 font-medium">{line.split('.')[0]}.</span>
-                                 <span>{line.split('.').slice(1).join('.')}</span>
-                               </span>
-                             ) : (
-                               line
-                             )}
-                           </p>
-                         ))}
-                       </div>
-                     ))}
-                   </div>
+                  <div className="prose prose-sm max-w-none text-gray-600">
+                    {item.answer.split('\n\n').map((paragraph: string, pIndex: number) => (
+                      <div key={pIndex} className="mb-4">
+                        {paragraph.split('\n').map((line: string, lIndex: number) => (
+                          <p key={lIndex} className="mb-2">
+                            {line.startsWith('•') ? (
+                              <span className="flex items-start">
+                                <span className="mr-2">•</span>
+                                <span>{line.substring(1)}</span>
+                              </span>
+                            ) : line.match(/^\d+\./) ? (
+                              <span className="flex items-start">
+                                <span className="mr-2 font-medium">{line.split('.')[0]}.</span>
+                                <span>{line.split('.').slice(1).join('.')}</span>
+                              </span>
+                            ) : (
+                              line
+                            )}
+                          </p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -929,25 +929,25 @@ export default function Home() {
               Understand Your True SEO Performance
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
-              <a 
-                href="#guide"
+            <a 
+              href="#guide"
                 className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition-all duration-200 shadow-sm"
-              >
+            >
                 Quick Guide
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </a>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </a>
               <Link href="/documentation" legacyBehavior>
                 <a className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 shadow-sm">
                   Documentation
@@ -962,8 +962,11 @@ export default function Home() {
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Upload JSON Key
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                  <span>Upload JSON Key</span>
+                  <HelpTooltip content="Import the JSON key file downloaded from Google Cloud Console for the Service Account you created with Search Console API access.">
+                    <InformationCircleIcon className="w-4 h-4 text-gray-500 ml-1 cursor-help" /> 
+                  </HelpTooltip>
                 </label>
                 <FileUploadZone onFileSelect={setFile} selectedFile={file} />
               </div>
