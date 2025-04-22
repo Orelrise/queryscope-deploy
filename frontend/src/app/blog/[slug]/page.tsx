@@ -15,6 +15,8 @@ interface PostMetadata {
   title: string;
   date: string;
   excerpt: string;
+  author?: string;
+  tags?: string[];
 }
 
 // Define interface for full post data (frontmatter + content)
@@ -37,6 +39,8 @@ function getAllPostMetadata(): PostMetadata[] {
       date: matterResult.data.date || new Date().toISOString(),
       excerpt: matterResult.data.excerpt || '',
       slug: matterResult.data.slug || fileName.replace(/\.mdx$/, ''),
+      author: matterResult.data.author || undefined,
+      tags: matterResult.data.tags || [],
     };
   });
   // Sort posts by date, newest first, to potentially show recent related posts
@@ -62,15 +66,16 @@ function getPostBySlug(slug: string): PostData | undefined {
     const { data, content } = matter(fileContents);
 
     if (!data.title || !data.date || !data.slug || !content) {
-      console.warn(`Missing frontmatter or content in ${slug}.mdx`);
-      return undefined;
+      console.warn(`Missing essential frontmatter or content in ${slug}.mdx`);
     }
 
     return {
-      slug: data.slug,
-      title: data.title,
-      date: data.date,
+      slug: data.slug || slug,
+      title: data.title || 'Untitled Post',
+      date: data.date || new Date().toISOString(),
       excerpt: data.excerpt || '',
+      author: data.author || undefined,
+      tags: data.tags || [],
       content: content,
     };
   } catch (error) {
@@ -94,18 +99,36 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     .slice(0, 2); // Take the first 2 other posts
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen bg-white dark:bg-neutral-900 text-gray-900">
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <article className="prose lg:prose-lg max-w-none dark:prose-invert">
-          <header className="mb-8">
+          <header className="mb-8 border-b border-gray-200 dark:border-neutral-700 pb-6">
             <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 leading-tight">
               {post.title}
             </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Published on {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Created by Aurelien</p>
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+              {post.author && (
+                <span className="mr-3 pr-3 border-r border-gray-300 dark:border-neutral-600">
+                   By {post.author}
+                </span>
+              )}
+              <span>
+                Published on {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </span>
+            </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-4">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-block bg-primary/10 text-primary text-xs font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full dark:bg-primary/20 dark:text-primary"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </header>
 
           <TableOfContents content={post.content} />
