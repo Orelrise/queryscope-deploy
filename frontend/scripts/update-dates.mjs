@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const postsDirectory = path.join(process.cwd(), 'frontend/src/blog/posts');
+const postsDirectory = path.join(__dirname, '../src/blog/posts');
 
 function updateDates() {
   const files = fs.readdirSync(postsDirectory);
