@@ -53,7 +53,7 @@ npm run dev
 
 ## Usage
 
-1. Access app at http://localhost:3000
+1. Access app at https://querscope.app
 2. Upload GSC service account JSON key
 3. Select date range
 4. Define brand detection regex
