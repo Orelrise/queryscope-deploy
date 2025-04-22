@@ -7,7 +7,7 @@ const Header = () => {
   const pathname = usePathname();
 
   const linkClasses = (path: string) => 
-    `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+    `px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
       pathname === path 
         ? 'bg-gradient-to-r from-primary to-secondary text-white'
         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
@@ -20,7 +20,7 @@ const Header = () => {
           <div className="flex items-center">
              {/* Optional: Add Logo/Brand Name here if desired */}
              <Link href="/" legacyBehavior>
-               <a className="text-lg font-bold text-gray-900 hover:text-purple-600 transition-colors">
+               <a className="text-xl font-bold text-gray-900 hover:text-purple-600 transition-colors">
                  Query<span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Scope</span>
                </a>
              </Link>

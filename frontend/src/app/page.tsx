@@ -643,12 +643,10 @@ const FileUploadZone = ({ onFileSelect, selectedFile }: { onFileSelect: (file: F
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`w-full p-8 border-2 border-dashed rounded-lg cursor-pointer transition-all duration-200 ${
-        isDragging
-          ? 'border-purple-500 bg-purple-50'
-          : selectedFile 
-            ? 'border-purple-500 bg-purple-50'
-            : 'border-gray-200 hover:border-purple-500 hover:bg-purple-50'
+      className={`w-full p-8 border-2 rounded-lg cursor-pointer transition-all duration-200 ${ 
+        isDragging || selectedFile 
+          ? 'border-primary border-solid bg-gradient-to-r from-primary/10 to-secondary/10' // Keep this state as is
+          : 'border-gray-200 border-dashed hover:bg-gray-50' // Keep border gray dashed, add subtle bg hover
       }`}
     >
       <input
@@ -662,7 +660,7 @@ const FileUploadZone = ({ onFileSelect, selectedFile }: { onFileSelect: (file: F
         {selectedFile ? (
           <div className="flex items-center justify-center space-x-2">
             <svg 
-              className="w-5 h-5 text-purple-500" 
+              className="w-5 h-5 text-primary" 
               fill="none" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
@@ -672,7 +670,7 @@ const FileUploadZone = ({ onFileSelect, selectedFile }: { onFileSelect: (file: F
             >
               <path d="M5 13l4 4L19 7"></path>
             </svg>
-            <p className="text-purple-600 font-medium">
+            <p className="text-primary font-medium">
               {selectedFile.name}
             </p>
           </div>
