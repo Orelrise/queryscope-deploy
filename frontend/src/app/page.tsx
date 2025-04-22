@@ -895,74 +895,38 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-white px-4 sm:px-6 lg:px-8">
-      <Header />
-
-      {loading && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex justify-center items-center">
-          <div className="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Analysis in Progress</h3>
-              <div className="mb-2 text-sm text-gray-500">Please wait, this may take a minute...</div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mb-4">
-                <div 
-                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-500 ease-linear"
-                  style={{ width: `${progressPercent}%` }}
-                ></div>
-              </div>
-              <div className="text-sm font-medium text-gray-700">{progressPercent}%</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-2xl mx-auto">
+    <main className="px-4 sm:px-6 lg:px-8 flex-grow">
+      <div className="max-w-2xl mx-auto py-16">
         <div className="text-center mb-16">
-          <div className="mb-12">
-            <h2 className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-fade-in">
-              Reveal your organic search power
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 mt-2">
-              beyond brand visibility
-            </p>
-          </div>
           <div className="flex flex-col items-center gap-4">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
-              Query<span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Scope</span>
+            <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-neutral-100 tracking-tight">
+              Unlock Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">True</span> Organic Growth
             </h1>
-            <p className="text-lg text-gray-600 font-medium">
-              Understand Your True SEO Performance
+            <p className="text-lg md:text-xl text-gray-600 dark:text-neutral-300 max-w-xl mx-auto mt-4">
+              Stop guessing with total traffic. QueryScope analyzes your Google Search Console data to isolate non-brand queries, revealing your real SEO performance.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
-            <a 
-              href="#guide"
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 transition-all duration-200 shadow-sm"
-            >
-                Quick Guide
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+              <a 
+                href="#guide"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all duration-200 shadow-sm"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </a>
-              <Link href="/documentation" legacyBehavior>
-                <a className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 shadow-sm">
-                  Documentation
-                  <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>
-                </a>
+                Quick Guide
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              <Link href="/blog" legacyBehavior>
+                 <a className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-all duration-200 shadow-sm">
+                   Blog Insights
+                   <svg className="w-4 h-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5l7 7-7 7"></path></svg>
+                 </a>
               </Link>
             </div>
           </div>
         </div>
+      </div>
 
+      <section id="upload-section" className="py-16 px-4 sm:px-6 lg:px-8 -mt-16">
         <form onSubmit={handleSubmit}>
           <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <div className="space-y-6">
@@ -1309,7 +1273,7 @@ export default function Home() {
             </a>
           </p>
         </footer>
-      </div>
+      </section>
     </main>
   );
 }
