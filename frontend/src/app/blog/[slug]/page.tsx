@@ -94,10 +94,10 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     .slice(0, 2); // Take the first 2 other posts
 
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-neutral-950">
+    <div className="min-h-screen bg-white text-gray-900">
       <Header />
-      <main className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-neutral-800 dark:text-neutral-200">
-        <article>
+      <main className="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <article className="prose lg:prose-lg max-w-none dark:prose-invert">
           <header className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-3 leading-tight">
               {post.title}

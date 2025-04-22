@@ -9,7 +9,7 @@ const Header = () => {
   const linkClasses = (path: string) => 
     `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
       pathname === path 
-        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
+        ? 'bg-gradient-to-r from-primary to-secondary text-white'
         : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
     }`;
 
@@ -21,7 +21,7 @@ const Header = () => {
              {/* Optional: Add Logo/Brand Name here if desired */}
              <Link href="/" legacyBehavior>
                <a className="text-lg font-bold text-gray-900 hover:text-purple-600 transition-colors">
-                 Query<span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">Scope</span>
+                 Query<span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Scope</span>
                </a>
              </Link>
           </div>

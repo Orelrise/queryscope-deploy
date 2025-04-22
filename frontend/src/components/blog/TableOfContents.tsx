@@ -28,18 +28,18 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ content }) => {
   }
 
   return (
-    <div className="mb-10 p-1 rounded-lg bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-md">
+    <div className="mb-10 p-1 rounded-lg bg-gradient-to-r from-primary to-secondary shadow-md">
       <div className="bg-white dark:bg-neutral-900 rounded-md p-6">
-        <h3 className="text-xl font-bold mb-5 text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 border-b border-neutral-200 dark:border-neutral-700 pb-3">
+        <h3 className="text-xl font-bold mb-5 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary dark:from-primary dark:to-secondary border-b border-neutral-200 dark:border-neutral-700 pb-3">
           In this Article
         </h3>
         <ul className="space-y-3">
           {headings.map((heading) => (
             <li key={heading.id} className="flex items-start group">
-              <span className="mr-3 mt-[0.3rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 dark:from-purple-500 dark:to-pink-500 group-hover:scale-125 transition-transform duration-150"></span>
+              <span className="mr-3 mt-[0.3rem] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gradient-to-r from-primary to-secondary dark:from-primary dark:to-secondary group-hover:scale-125 transition-transform duration-150"></span>
               <a
                 href={`#${heading.id}`}
-                className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-purple-700 dark:hover:text-purple-400 transition-colors duration-150"
+                className="text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:text-primary dark:hover:text-secondary transition-colors duration-150"
               >
                 {heading.text}
               </a>

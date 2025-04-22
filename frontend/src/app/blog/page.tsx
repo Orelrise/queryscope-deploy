@@ -39,7 +39,7 @@ export default function BlogPage() {
   const sortedPosts = [...postMetadata].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-neutral-950">
+    <div className="min-h-screen bg-white text-gray-900">
       <Header />
 
       {/* New Blog Hero Section */}

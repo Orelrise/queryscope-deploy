@@ -895,7 +895,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-200">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900">
       <Header />
 
       <main className="px-4 sm:px-6 lg:px-8 flex-grow">
