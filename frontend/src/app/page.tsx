@@ -898,24 +898,24 @@ export default function Home() {
 
       <main className="px-4 sm:px-6 lg:px-8 flex-grow">
         <div className="max-w-2xl mx-auto py-16">
-          <div className="text-center mb-16">
-            <div className="flex flex-col items-center gap-4">
+        <div className="text-center mb-16">
+          <div className="flex flex-col items-center gap-4">
               <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-neutral-100 tracking-tight">
                 Unlock Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">True</span> Organic Growth
-              </h1>
+            </h1>
               <p className="text-lg md:text-xl text-gray-600 dark:text-neutral-300 max-w-xl mx-auto mt-4">
                 Stop guessing with total traffic. QueryScope analyzes your Google Search Console data to isolate non-brand queries, revealing your real SEO performance.
-              </p>
+            </p>
               <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-                <a 
-                  href="#guide"
+            <a 
+              href="#guide"
                   className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all duration-200 shadow-sm"
                 >
                   Quick Guide
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </a>
+              </svg>
+            </a>
                 <Link href="/documentation" legacyBehavior>
                    <a className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-all duration-200 shadow-sm">
                      Documentation
@@ -928,354 +928,354 @@ export default function Home() {
         </div>
 
         <section id="upload-section" className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 -mt-16">
-          <form onSubmit={handleSubmit}>
-            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <div className="space-y-6">
-                <div>
+        <form onSubmit={handleSubmit}>
+          <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <div className="space-y-6">
+              <div>
                   <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
                     <span>Upload JSON Key</span>
                     <HelpTooltip content="Import the JSON key file downloaded from Google Cloud Console for the Service Account you created with Search Console API access.">
                       <InformationCircleIcon className="w-4 h-4 text-gray-500 ml-1 cursor-help" /> 
                     </HelpTooltip>
-                  </label>
-                  <FileUploadZone onFileSelect={setFile} selectedFile={file} />
-                </div>
+                </label>
+                <FileUploadZone onFileSelect={setFile} selectedFile={file} />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Website
+                </label>
+                <input
+                  type="text"
+                  value={siteUrl}
+                  onChange={(e) => setSiteUrl(e.target.value)}
+                  placeholder="example.com"
+                  className="w-full rounded-lg p-3 bg-white border border-gray-200"
+                />
+                <p className="mt-2 text-sm text-gray-500">
+                  Enter domain without protocol (e.g., example.com)
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Website
+                    From
                   </label>
-                  <input
-                    type="text"
-                    value={siteUrl}
-                    onChange={(e) => setSiteUrl(e.target.value)}
-                    placeholder="example.com"
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    maxDate={new Date()}
+                    placeholderText="Select start date"
                     className="w-full rounded-lg p-3 bg-white border border-gray-200"
                   />
-                  <p className="mt-2 text-sm text-gray-500">
-                    Enter domain without protocol (e.g., example.com)
-                  </p>
                 </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      From
-                    </label>
-                    <DatePicker
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      selectsStart
-                      startDate={startDate}
-                      endDate={endDate}
-                      maxDate={new Date()}
-                      placeholderText="Select start date"
-                      className="w-full rounded-lg p-3 bg-white border border-gray-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      To
-                    </label>
-                    <DatePicker
-                      selected={endDate}
-                      onChange={(date) => setEndDate(date)}
-                      selectsEnd
-                      startDate={startDate}
-                      endDate={endDate}
-                      minDate={startDate}
-                      maxDate={new Date()}
-                      placeholderText="Select end date"
-                      className="w-full rounded-lg p-3 bg-white border border-gray-200"
-                    />
-                  </div>
-                </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Keywords to exclude from non-brand traffic
+                    To
                   </label>
-                  <input
-                    type="text"
-                    value={excludeRegex}
-                    onChange={(e) => setExcludeRegex(e.target.value)}
-                    placeholder="apple | iphone | macbook"
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                    maxDate={new Date()}
+                    placeholderText="Select end date"
                     className="w-full rounded-lg p-3 bg-white border border-gray-200"
                   />
-                  <p className="mt-2 text-sm text-gray-500">
-                    List keywords to exclude, separated by |. Any query containing these words will be treated as brand traffic.
-                  </p>
                 </div>
+              </div>
 
-                {error && (
-                  <div className="text-red-600 text-sm">
-                    {error}
-                  </div>
-                )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Keywords to exclude from non-brand traffic
+                </label>
+                <input
+                  type="text"
+                  value={excludeRegex}
+                  onChange={(e) => setExcludeRegex(e.target.value)}
+                  placeholder="apple | iphone | macbook"
+                  className="w-full rounded-lg p-3 bg-white border border-gray-200"
+                />
+                <p className="mt-2 text-sm text-gray-500">
+                  List keywords to exclude, separated by |. Any query containing these words will be treated as brand traffic.
+                </p>
+              </div>
 
-                <div>
-                  <button
-                    type="submit"
-                    disabled={loading}
+              {error && (
+                <div className="text-red-600 text-sm">
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
                     className="w-full bg-gradient-to-r from-primary to-secondary text-white font-medium py-3 px-4 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  {loading ? 'Processing...' : 'Analyze'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        {results && (
+          <div className="mt-8 animate-fade-in">
+            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-bold text-gray-900">Results</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleExportCSV(results)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-secondary rounded-lg hover:opacity-90 transition-all duration-200 shadow-sm hover:shadow-md"
                   >
-                    {loading ? 'Processing...' : 'Analyze'}
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 3v4a1 1 0 001 1h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    CSV
+                  </button>
+                  <button
+                    onClick={() => handleExportExcel(results)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <svg className="w-4 h-4 text-gray-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 3v4a1 1 0 001 1h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="currentColor" strokeWidth="2"/>
+                      <path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                    Excel
                   </button>
                 </div>
               </div>
-            </div>
-          </form>
 
-          {results && (
-            <div className="mt-8 animate-fade-in">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900">Results</h2>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleExportCSV(results)}
-                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-secondary rounded-lg hover:opacity-90 transition-all duration-200 shadow-sm hover:shadow-md"
-                    >
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 3v4a1 1 0 001 1h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                      CSV
-                    </button>
-                    <button
-                      onClick={() => handleExportExcel(results)}
-                      className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
-                    >
-                      <svg className="w-4 h-4 text-gray-700" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 3v4a1 1 0 001 1h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                        <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M8 12h8M8 16h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                      Excel
-                    </button>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl p-4 border border-indigo-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-medium text-gray-800">Non-Brand Traffic</h3>
+                    <HelpTooltip content="Traffic from search queries that don't contain your brand terms">
+                      <InformationCircleIcon className="w-4 h-4 text-gray-500" />
+                    </HelpTooltip>
+                  </div>
+                  <div className="text-2xl font-bold text-indigo-600 mb-1">
+                    {results.non_brand_clicks.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {((results.non_brand_clicks / (results.non_brand_clicks + results.brand_clicks)) * 100).toFixed(1)}% of total
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                  <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl p-4 border border-indigo-100">
+                <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-sm font-medium text-gray-800">Brand Traffic</h3>
+                    <HelpTooltip content="Traffic from search queries containing your brand terms">
+                      <InformationCircleIcon className="w-4 h-4 text-gray-500" />
+                    </HelpTooltip>
+                  </div>
+                  <div className="text-2xl font-bold text-violet-600 mb-1">
+                    {results.brand_clicks.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {((results.brand_clicks / (results.non_brand_clicks + results.brand_clicks)) * 100).toFixed(1)}% of total
+                  </div>
+                </div>
+
+                {results.unattributed_clicks > 0 && (
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-medium text-gray-800">Non-Brand Traffic</h3>
-                      <HelpTooltip content="Traffic from search queries that don't contain your brand terms">
+                      <h3 className="text-sm font-medium text-gray-800">Hidden Traffic</h3>
+                      <HelpTooltip content="Clicks that Google Search Console doesn't attribute to specific queries due to privacy protection">
                         <InformationCircleIcon className="w-4 h-4 text-gray-500" />
                       </HelpTooltip>
                     </div>
-                    <div className="text-2xl font-bold text-indigo-600 mb-1">
-                      {results.non_brand_clicks.toLocaleString()}
+                    <div className="text-2xl font-bold text-gray-700 mb-1">
+                      {results.unattributed_clicks.toLocaleString()}
                     </div>
                     <div className="text-sm text-gray-600">
-                      {((results.non_brand_clicks / (results.non_brand_clicks + results.brand_clicks)) * 100).toFixed(1)}% of total
+                      Standard GSC limitation
                     </div>
                   </div>
+                )}
+              </div>
 
-                  <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-sm font-medium text-gray-800">Brand Traffic</h3>
-                      <HelpTooltip content="Traffic from search queries containing your brand terms">
-                        <InformationCircleIcon className="w-4 h-4 text-gray-500" />
-                      </HelpTooltip>
-                    </div>
-                    <div className="text-2xl font-bold text-violet-600 mb-1">
-                      {results.brand_clicks.toLocaleString()}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {((results.brand_clicks / (results.non_brand_clicks + results.brand_clicks)) * 100).toFixed(1)}% of total
-                    </div>
-                  </div>
-
-                  {results.unattributed_clicks > 0 && (
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-4 border border-gray-200">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-sm font-medium text-gray-800">Hidden Traffic</h3>
-                        <HelpTooltip content="Clicks that Google Search Console doesn't attribute to specific queries due to privacy protection">
-                          <InformationCircleIcon className="w-4 h-4 text-gray-500" />
-                        </HelpTooltip>
-                      </div>
-                      <div className="text-2xl font-bold text-gray-700 mb-1">
-                        {results.unattributed_clicks.toLocaleString()}
-                      </div>
-                      <div className="text-sm text-gray-600">
-                        Standard GSC limitation
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div className="space-y-6">
-                    <div className="bg-white rounded-xl border border-indigo-100 p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-6">Non-Brand Performance</h3>
-                      <div className="grid grid-cols-2 gap-6">
-                        <div>
-                          <div className="text-sm text-gray-600 mb-1">CTR</div>
-                          <div className="text-2xl font-bold text-indigo-600">
-                            {results.non_brand_ctr.toFixed(1)}%
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-gray-600 mb-1">Avg Position</div>
-                          <div className="text-2xl font-bold text-indigo-600">
-                            {results.non_brand_avg_position.toFixed(1)}
-                          </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div className="bg-white rounded-xl border border-indigo-100 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-6">Non-Brand Performance</h3>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">CTR</div>
+                        <div className="text-2xl font-bold text-indigo-600">
+                          {results.non_brand_ctr.toFixed(1)}%
                         </div>
                       </div>
-
-                      <div className="mt-6">
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">Top Queries</h4>
-                        <div className="space-y-3">
-                          {results.top_non_brand_queries.map((query: QueryData, index: number) => (
-                            <div 
-                              key={index} 
-                              className="flex items-center justify-between p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 transition-colors"
-                            >
-                              <span className="text-sm font-medium text-gray-900">{query.query}</span>
-                              <div className="flex items-center gap-4">
-                                <span className="text-xs text-gray-600">Position: {query.position.toFixed(1)}</span>
-                                <span className="text-sm font-medium text-indigo-600">
-                                  {query.clicks.toLocaleString()} clicks
-                                </span>
-                              </div>
-                            </div>
-                          ))}
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">Avg Position</div>
+                        <div className="text-2xl font-bold text-indigo-600">
+                          {results.non_brand_avg_position.toFixed(1)}
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-6">
-                    <div className="bg-white rounded-xl border border-violet-100 p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-6">Brand Performance</h3>
-                      <div className="grid grid-cols-2 gap-6">
-                        <div>
-                          <div className="text-sm text-gray-600 mb-1">CTR</div>
-                          <div className="text-2xl font-bold text-violet-600">
-                            {results.brand_ctr.toFixed(1)}%
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-sm text-gray-600 mb-1">Avg Position</div>
-                          <div className="text-2xl font-bold text-violet-600">
-                            {results.brand_avg_position.toFixed(1)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-6">
-                        <h4 className="text-sm font-medium text-gray-700 mb-3">Top Queries</h4>
-                        <div className="space-y-3">
-                          {results.top_brand_queries.map((query: QueryData, index: number) => (
-                            <div 
-                              key={index} 
-                              className="flex items-center justify-between p-3 rounded-lg bg-violet-50 hover:bg-violet-100 transition-colors"
-                            >
-                              <span className="text-sm font-medium text-gray-900">{query.query}</span>
-                              <div className="flex items-center gap-4">
-                                <span className="text-xs text-gray-600">Position: {query.position.toFixed(1)}</span>
-                                <span className="text-sm font-medium text-violet-600">
-                                  {query.clicks.toLocaleString()} clicks
-                                </span>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8">
-                  <div className="bg-white rounded-xl border border-gray-200 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Traffic Distribution</h3>
-                    <div className="h-[300px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { 
-                                name: 'Non-Brand', 
-                                value: results.non_brand_clicks,
-                                percentage: (results.non_brand_clicks / (results.non_brand_clicks + results.brand_clicks) * 100)
-                              },
-                              { 
-                                name: 'Brand', 
-                                value: results.brand_clicks,
-                                percentage: (results.brand_clicks / (results.non_brand_clicks + results.brand_clicks) * 100)
-                              }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={false}
-                            outerRadius={120}
-                            fill="#8884d8"
-                            dataKey="value"
+                    <div className="mt-6">
+                      <h4 className="text-sm font-medium text-gray-700 mb-3">Top Queries</h4>
+                      <div className="space-y-3">
+                        {results.top_non_brand_queries.map((query: QueryData, index: number) => (
+                          <div 
+                            key={index} 
+                            className="flex items-center justify-between p-3 rounded-lg bg-indigo-50 hover:bg-indigo-100 transition-colors"
                           >
-                            <Cell fill="#6366F1" />
-                            <Cell fill="#A855F7" />
-                          </Pie>
-                          <Tooltip 
-                            formatter={(value, name, props) => [
-                              `${value.toLocaleString()} clicks (${props.payload.percentage.toFixed(1)}%)`,
-                              name
-                            ]}
-                            contentStyle={{
-                              backgroundColor: 'white',
-                              border: 'none',
-                              borderRadius: '8px',
-                              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                              padding: '12px'
-                            }}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
+                            <span className="text-sm font-medium text-gray-900">{query.query}</span>
+                            <div className="flex items-center gap-4">
+                              <span className="text-xs text-gray-600">Position: {query.position.toFixed(1)}</span>
+                              <span className="text-sm font-medium text-indigo-600">
+                                {query.clicks.toLocaleString()} clicks
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="bg-white rounded-xl border border-violet-100 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-6">Brand Performance</h3>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">CTR</div>
+                        <div className="text-2xl font-bold text-violet-600">
+                          {results.brand_ctr.toFixed(1)}%
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">Avg Position</div>
+                        <div className="text-2xl font-bold text-violet-600">
+                          {results.brand_avg_position.toFixed(1)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6">
+                      <h4 className="text-sm font-medium text-gray-700 mb-3">Top Queries</h4>
+                      <div className="space-y-3">
+                        {results.top_brand_queries.map((query: QueryData, index: number) => (
+                          <div 
+                            key={index} 
+                            className="flex items-center justify-between p-3 rounded-lg bg-violet-50 hover:bg-violet-100 transition-colors"
+                          >
+                            <span className="text-sm font-medium text-gray-900">{query.query}</span>
+                            <div className="flex items-center gap-4">
+                              <span className="text-xs text-gray-600">Position: {query.position.toFixed(1)}</span>
+                              <span className="text-sm font-medium text-violet-600">
+                                {query.clicks.toLocaleString()} clicks
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div className="mt-8">
+                <div className="bg-white rounded-xl border border-gray-200 p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Traffic Distribution</h3>
+                  <div className="h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { 
+                              name: 'Non-Brand', 
+                              value: results.non_brand_clicks,
+                              percentage: (results.non_brand_clicks / (results.non_brand_clicks + results.brand_clicks) * 100)
+                            },
+                            { 
+                              name: 'Brand', 
+                              value: results.brand_clicks,
+                              percentage: (results.brand_clicks / (results.non_brand_clicks + results.brand_clicks) * 100)
+                            }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={120}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          <Cell fill="#6366F1" />
+                          <Cell fill="#A855F7" />
+                        </Pie>
+                        <Tooltip 
+                          formatter={(value, name, props) => [
+                            `${value.toLocaleString()} clicks (${props.payload.percentage.toFixed(1)}%)`,
+                            name
+                          ]}
+                          contentStyle={{
+                            backgroundColor: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                            padding: '12px'
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
-
-          <FAQSection />
-
-          <div className="mt-16 pt-8 border-t border-gray-200 text-center">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Feedback & Suggestions</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Have an idea to improve QueryScope? Found a bug? Your feedback is valuable to us!
-            </p>
-            <a 
-              href="mailto:aurelien.pringarbe.pro@gmail.com"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-secondary rounded-lg hover:opacity-90 transition-all duration-200 shadow-sm hover:shadow-md"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-              Send an Email
-            </a>
           </div>
+        )}
+
+        <FAQSection />
+
+        <div className="mt-16 pt-8 border-t border-gray-200 text-center">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">Feedback & Suggestions</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Have an idea to improve QueryScope? Found a bug? Your feedback is valuable to us!
+          </p>
+          <a 
+            href="mailto:aurelien.pringarbe.pro@gmail.com"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-primary to-secondary rounded-lg hover:opacity-90 transition-all duration-200 shadow-sm hover:shadow-md"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            Send an Email
+          </a>
+        </div>
         </section>
       </main>
 
-      <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-        <p>© QueryScope 2025</p>
+        <footer className="mt-16 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+          <p>© QueryScope 2025</p>
         <div className="mt-2 space-x-4">
           <Link href="#guide" legacyBehavior><a className="hover:text-gray-700 transition-colors">Guide</a></Link>
           <span>|</span>
           <Link href="/documentation" legacyBehavior><a className="hover:text-gray-700 transition-colors">Documentation</a></Link>
         </div>
         <p className="mt-2">
-          Created by{' '}
-          <a 
-            href="https://www.linkedin.com/in/aur%C3%A9lien-pringarbe-4b57561b0/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+            Created by{' '}
+            <a 
+              href="https://www.linkedin.com/in/aur%C3%A9lien-pringarbe-4b57561b0/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
             className="relative font-medium bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r from-primary to-secondary after:transition-all after:duration-300 hover:after:w-full"
-          >
-            Aurélien Pringarbe
-          </a>
-        </p>
-      </footer>
-    </div>
+            >
+              Aurélien Pringarbe
+            </a>
+          </p>
+        </footer>
+      </div>
   );
 }
