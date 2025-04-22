@@ -133,7 +133,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             </h2>
             <div className="grid gap-8 sm:grid-cols-2">
               {relatedPosts.map((relatedPost) => (
-                <div key={relatedPost.slug} className="rounded-lg p-1 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div key={relatedPost.slug} className="rounded-lg p-1 bg-gradient-to-r from-primary to-secondary shadow-md hover:shadow-lg transition-shadow duration-300">
                   <div className="bg-white dark:bg-neutral-900 rounded-md p-5 flex flex-col flex-grow h-full">
                     <h3 className="text-lg font-semibold mb-2 text-neutral-800 dark:text-neutral-200 group-hover:text-purple-700 transition-colors duration-200">
                       <Link href={`/blog/${relatedPost.slug}`}>
